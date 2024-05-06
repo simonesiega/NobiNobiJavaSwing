@@ -1,22 +1,18 @@
-package nobinobi;
+package nobinobi.obj.frame;
 
 import java.awt.GridLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Vector;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import nobinobi.editable.*;
+import nobinobi.obj.editable.*;
 
 public class SceneFrame extends JFrame implements WindowListener{
     private JTextField txtTitolo;
@@ -98,7 +94,7 @@ public class SceneFrame extends JFrame implements WindowListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
-                    PrintWriter writer = new PrintWriter(new FileOutputStream("scenes.csv"));
+                    PrintWriter writer = new PrintWriter(new FileOutputStream("nobinobi/obj/saves/scenes.csv"));
                     for (IntroductionEditable ie : scenes) {
                         ie.saveToFile(writer);
                     }
@@ -213,20 +209,44 @@ public class SceneFrame extends JFrame implements WindowListener{
         lstScene.setListData(scenes);
     }
 
-    private void loadScenes(){
-        try{
-            BufferedReader reader = new BufferedReader(new FileReader("src/nobinobi/scene.csv"));
-
-            String line = "";
+    private void loadScenes() {
+        File file = new File("nobinobi/obj/saves/scenes.csv");
+        createFileIfNotExists(file);
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
             scenes.clear();
-            while ((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 scenes.add(new IntroductionEditable(line));
             }
             reader.close();
             refreshList();
-        }
-        catch(IOException ioe){
+        } catch (IOException ioe) {
+            System.out.println("Errore durante la lettura del file:");
             System.out.println(ioe.getMessage());
+        }
+    }
+
+    private static void createFileIfNotExists(File file) {
+        try {
+            if (!file.exists()) {
+                /*
+                if (file.createNewFile()) {
+                    System.out.println("File 'scenes.csv' creato con successo.");
+                } else {
+                    System.out.println("Impossibile creare il file 'scenes.csv'.");
+                    System.exit(-1);
+                }
+                */
+                if (!file.createNewFile()) {
+                    System.out.println("Impossibile creare il file 'scenes.csv'.");
+                    System.exit(-1);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Errore durante la creazione del file:");
+            e.printStackTrace();
+            System.exit(-1);
         }
     }
 

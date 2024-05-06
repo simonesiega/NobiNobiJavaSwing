@@ -1,18 +1,41 @@
-package nobinobi;
+package nobinobi.obj;
 
+/**
+ * Classe che implementa una condizione
+ */
 public class Condition {
+
+    // Flag
     protected int flag;
 
+    /**
+     * Costruttore vuoto
+     * Inizializza tutti gli attributi vuoti
+     */
     public Condition() {
         flag = 0;
     }
+
+    /**
+     * Costruttore di condition
+     * @param c Flag
+     */
     public Condition(int c) {
         flag = c;
     }
 
+    /**
+     * 1 / tutti i check
+     * @param c condizione da confrontare
+     * @return true o false
+     */
     public boolean test(Condition c){
         return (flag % 2 == 0) ? ((c.getCondition() & flag) > 0) : ((c.getCondition() & (flag-1)) == flag-1);
     }
+
+    /*
+    * Controlla tutti i check del flag
+    */
 
     public boolean isMarket(){
         if((flag & 2) == 2){
@@ -154,6 +177,7 @@ public class Condition {
         return false;
     }
 
+    // Getter di flag
     public int getCondition(){
         return flag;
     }
