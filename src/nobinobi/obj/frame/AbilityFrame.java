@@ -1,40 +1,39 @@
 package nobinobi.obj.frame;
 
-import java.awt.GridLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.*;
+import nobinobi.obj.*;
+import nobinobi.obj.editable.*;
+
+import javax.swing.*;
+import javax.swing.text.PlainDocument;
+import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.*;
 import java.util.Vector;
 
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import nobinobi.obj.editable.*;
-
-public class SceneFrame extends JFrame implements WindowListener{
-    private JTextField txtTitolo;
+public class AbilityFrame extends JFrame implements WindowListener{
+    private JTextField txtName;
     private JTextArea txtDescrizione;
-    private JTextField txtImmagine;
+    private JTextField txtForza;
+    private JTextField txtTecnica;
+    private final Vector<JCheckBox> conditions = new Vector<>();
     private JPanel pnlButtons;
     private JButton btnLoad;
     private JButton btnNew;
     private JButton btnSave;
     private JButton btnUpdate;
 
-    private JList<IntroductionEditable> lstScene;
+    private JList<AbilityEditable> lstScene;
 
-    private Font f = new Font("Arial", Font.PLAIN, 18);
-    private Font fb = new Font("Arial", Font.BOLD, 18);
+    private final Font f = new Font("Arial", Font.PLAIN, 18);
+    private final Font fb = new Font("Arial", Font.BOLD, 18);
 
-    private Vector<IntroductionEditable> scenes = new Vector<IntroductionEditable>();
-    private IntroductionEditable currentScene = new IntroductionEditable();
+    private final Vector<AbilityEditable> scenes = new Vector<>();
+    private AbilityEditable currentScene = new AbilityEditable();
     private boolean isNew = true;
 
-    public SceneFrame() {
-        super("Scene Editor");
+    public AbilityFrame() {
+        super("Ability Editor");
         setSize(800, 600);
         addWindowListener(this);
 
@@ -63,23 +62,18 @@ public class SceneFrame extends JFrame implements WindowListener{
 
         c.gridy = 0;
         c.weighty = 0.5;
-        JLabel lblList = new JLabel("Elenco scene");
+        JLabel lblList = new JLabel("Elenco ability");
         pnl.add(lblList, c);
 
         c.gridy++;
         c.weighty = 9;
-        lstScene = new JList<IntroductionEditable>();
-        lstScene.addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (lstScene.getSelectedValue() != null){
-                    currentScene = lstScene.getSelectedValue();
-                    isNew = false;
-                    refreshDetail();
-                }
+        lstScene = new JList<AbilityEditable>();
+        lstScene.addListSelectionListener(e -> {
+            if (lstScene.getSelectedValue() != null){
+                currentScene = lstScene.getSelectedValue();
+                isNew = false;
+                refreshDetail();
             }
-
         });
         pnl.add(lstScene, c);
 
@@ -90,21 +84,17 @@ public class SceneFrame extends JFrame implements WindowListener{
         pnlButtons.add(btnLoad);
         btnSave = new JButton("Salva");
         btnSave.setFont(fb);
-        btnSave.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try{
-                    PrintWriter writer = new PrintWriter(new FileOutputStream("nobinobi/obj/saves/scenes.csv"));
-                    for (IntroductionEditable ie : scenes) {
-                        ie.saveToFile(writer);
-                    }
-                    writer.close();
+        btnSave.addActionListener(e -> {
+            try{
+                PrintWriter writer = new PrintWriter(new FileOutputStream("nobinobi/obj/saves/abilities.csv"));
+                for (AbilityEditable ie : scenes) {
+                    ie.saveToFile(writer);
                 }
-                catch(IOException ioe){
-                    System.out.println(ioe.getMessage());
-                }
+                writer.close();
             }
-
+            catch(IOException ioe){
+                System.out.println(ioe.getMessage());
+            }
         });
         pnlButtons.add(btnSave);
         c.gridy++;
@@ -131,11 +121,11 @@ public class SceneFrame extends JFrame implements WindowListener{
         lbl = new JLabel("Titolo");
         lbl.setFont(fb);
         pnl.add(lbl, c);
-        txtTitolo = new JTextField();
-        txtTitolo.setFont(f);
+        txtName = new JTextField();
+        txtName.setFont(f);
         c.gridy++;
         c.weighty = 1;
-        pnl.add(txtTitolo, c);
+        pnl.add(txtName, c);
         c.gridy++;
         c.weighty = 1;
         lbl = new JLabel("Descrizione");
@@ -144,48 +134,77 @@ public class SceneFrame extends JFrame implements WindowListener{
         txtDescrizione = new JTextArea();
         txtDescrizione.setFont(f);
         c.gridy++;
-        c.weighty = 10;
+        c.weighty = 2;
         pnl.add(new JScrollPane(txtDescrizione), c);
         c.gridy++;
         c.weighty = 1;
-        lbl = new JLabel("Immagine");
+
+        lbl = new JLabel("Forza");
         lbl.setFont(fb);
         pnl.add(lbl, c);
-        txtImmagine = new JTextField();
-        txtImmagine.setFont(f);
+        txtForza = createIntegerField();
+        txtForza.setFont(f);
         c.gridy++;
         c.weighty = 2;
-        pnl.add(txtImmagine, c);
+        pnl.add(txtForza, c);
+        c.gridy++;
+        c.weighty = 1;
+
+        lbl = new JLabel("Tecnica");
+        lbl.setFont(fb);
+        pnl.add(lbl, c);
+        txtTecnica = createIntegerField();
+        txtTecnica.setFont(f);
+        c.gridy++;
+        c.weighty = 2;
+        pnl.add(txtTecnica, c);
+
+        c.gridy++;
+        c.weighty = 1;
+        // Creazione del pannello per le checkbox
+        JPanel checkboxPanel = new JPanel(new GridLayout(0, 4)); // 4 checkbox per riga
+        String[] tecnicaLabels = {"Tutte/Una", "Mercato", "Porto","Città","Villaggio","Castello","Chiesa","Foresta","Prateria","Montagna",
+                "Deserto","Collina","Mare","Lago","Fiume","Luna","Cielo","PNGSingolo","PNGGruppo","PNGFemmina","PNGMaschio"}; // Array di etichette per le checkbox
+        for (String label : tecnicaLabels) {
+            JCheckBox checkBox = new JCheckBox(label);
+            conditions.add(checkBox);
+            checkBox.setFont(f);
+            checkboxPanel.add(checkBox);
+        }
+
+        c.gridy++;
+        c.weighty = 1;
+        pnl.add(checkboxPanel, c);
 
         pnlButtons = new JPanel();
         pnlButtons.setLayout(new GridLayout(1, 5));
         btnNew = new JButton("Nuovo");
         btnNew.setFont(fb);
-        btnNew.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currentScene = new IntroductionEditable();
-                isNew = true;
-                refreshDetail();
-            }
-
+        btnNew.addActionListener(e -> {
+            currentScene = new AbilityEditable();
+            isNew = true;
+            refreshDetail();
         });
         pnlButtons.add(btnNew);
         btnUpdate = new JButton("Aggiorna");
         btnUpdate.setFont(fb);
-        btnUpdate.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currentScene.setTitle(txtTitolo.getText());
-                currentScene.setDescription(txtDescrizione.getText());
-                currentScene.setImage(txtImmagine.getText());
-                if (isNew){
-                    scenes.add(currentScene);
-                    isNew = false;
+        btnUpdate.addActionListener(e -> {
+            currentScene.setName(txtName.getText());
+            currentScene.setDescription(txtDescrizione.getText());
+            currentScene.setStrength(Integer.parseInt(txtForza.getText()));
+            currentScene.setTechnique(Integer.parseInt(txtTecnica.getText()));
+            int flag = 0;
+            for(int i = 0; i < conditions.size(); i++){
+                if(conditions.get(i).isSelected()){
+                    flag += Math.pow(2,i);
                 }
-                refreshList();
             }
-
+            currentScene.setConditions(new Condition(flag));
+            if (isNew){
+                scenes.add(currentScene);
+                isNew = false;
+            }
+            refreshList();
         });
         pnlButtons.add(btnUpdate);
         c.gridy++;
@@ -195,14 +214,41 @@ public class SceneFrame extends JFrame implements WindowListener{
         return pnl;
     }
 
+    private JTextField createIntegerField() {
+        JTextField textField = new JTextField();
+        ((PlainDocument) textField.getDocument()).setDocumentFilter(new IntegerFilter());
+        return textField;
+    }
+
+
     /**
      * Aggiorna i dati nello schermo con quelli della scena
      * corrente
      */
     public void refreshDetail(){
-        txtTitolo.setText(currentScene.getTitle());
+        txtName.setText(currentScene.getName());
         txtDescrizione.setText(currentScene.getDescription());
-        txtImmagine.setText(currentScene.getImage());
+        txtForza.setText(Integer.toString(currentScene.getStrength()));
+        txtTecnica.setText(Integer.toString(currentScene.getTechnique()));
+        System.out.println(currentScene.getConditions().getCondition());
+        String bin = convDecToBin(currentScene.getConditions().getCondition());
+        for (JCheckBox a : conditions) {
+            a.setSelected(false);
+        }
+        for(int i = 0; i < bin.length(); i++){
+            if(bin.charAt(i) == '1'){
+                conditions.get(i).setSelected(true);
+            }
+        }
+    }
+
+    private String convDecToBin(int condition) {
+        StringBuilder bin = new StringBuilder("");
+        while (condition > 0) {
+            bin.append(condition % 2);
+            condition /= 2;
+        }
+        return bin.toString();
     }
 
     public void refreshList(){
@@ -210,19 +256,19 @@ public class SceneFrame extends JFrame implements WindowListener{
     }
 
     private void loadScenes() {
-        File file = new File("nobinobi/obj/saves/scenes.csv");
+        File file = new File("nobinobi/obj/saves/abilities.csv");
         createFileIfNotExists(file);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
             scenes.clear();
             while ((line = reader.readLine()) != "" && line != null)
-            /*
-            * Condizione != "" altrimenti primo giro array nel costruttore di Scene ha dimensione 1
-            * ritorna quindi errore su value[1]
-            */
+                /*
+                 * Condizione != "" altrimenti primo giro array nel costruttore di Scene ha dimensione 1
+                 * ritorna quindi errore su value[1]
+                 */
             {
-                scenes.add(new IntroductionEditable(line));
+                scenes.add(new AbilityEditable(line));
             }
             reader.close();
             refreshList();

@@ -15,6 +15,10 @@ public class AbilityEditable extends Ability {
         super();
     }
 
+    public AbilityEditable(String line) {
+        super(line);
+    }
+
     /*
     * Setter della classe ability
     */

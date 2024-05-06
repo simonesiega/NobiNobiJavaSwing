@@ -31,6 +31,19 @@ public class Ability {
     }
 
     /**
+     * Costruttore di Abilitá che parte dalla stringa letta da un file
+     * @param line riga da analizzare
+     */
+    public Ability(String line) {
+        String[] l = line.split("@");
+        this.name = l[0];
+        this.description = l[1];
+        this.conditions = new Condition(Integer.parseInt(l[2]));
+        this.strength = Integer.parseInt(l[3]);
+        this.technique = Integer.parseInt(l[4]);
+    }
+
+    /**
      * Costruttore di Abilitá
      * @param conditions Condizione
      * @param strength Forza
@@ -89,7 +102,7 @@ public class Ability {
      * @return stringa da stampare
      */
     public String toFileString(){
-        String s = name + "@" + description + "@" + conditions.getCondition() + "@" + strength + "@" + technique;
+        String s = name + "@" + description + "@" + conditions.getCondition() + "@" + strength + "@" + technique + "\n";
         return s;
     }
 

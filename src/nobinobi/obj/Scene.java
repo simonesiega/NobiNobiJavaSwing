@@ -29,12 +29,19 @@ abstract class Scene {
      * Costruttore di scena (Non puó essere istanziata perché abstract)
      * @param file riga da analizzare
      */
-    protected Scene(String file){
-        String[] value= file.split("#");
-        title=value[0];
-        description=value[1];
-        image=value[2];
-    }
+     public Scene(String file){
+         String[] value= file.split("#");
+         /*
+         if (value.length == 3) {
+             title=value[0];
+             description=value[1];
+             image=value[2];
+         }
+         */
+         title=value[0];
+         description=value[1];
+         image=value[2];
+     }
 
     /**
      * Costruttore di scena con tutti e 3 i parametri
