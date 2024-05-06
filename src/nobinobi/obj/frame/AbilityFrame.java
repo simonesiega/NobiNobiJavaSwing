@@ -4,8 +4,12 @@ import nobinobi.obj.*;
 import nobinobi.obj.editable.*;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.text.PlainDocument;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.*;
@@ -128,6 +132,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
         pnl.add(txtName, c);
         c.gridy++;
         c.weighty = 1;
+
         lbl = new JLabel("Descrizione");
         lbl.setFont(fb);
         pnl.add(lbl, c);
@@ -158,9 +163,9 @@ public class AbilityFrame extends JFrame implements WindowListener{
         c.gridy++;
         c.weighty = 2;
         pnl.add(txtTecnica, c);
-
         c.gridy++;
         c.weighty = 1;
+
         // Creazione del pannello per le checkbox
         JPanel checkboxPanel = new JPanel(new GridLayout(0, 4)); // 4 checkbox per riga
         String[] tecnicaLabels = {"Tutte/Una", "Mercato", "Porto","Città","Villaggio","Castello","Chiesa","Foresta","Prateria","Montagna",
@@ -230,25 +235,15 @@ public class AbilityFrame extends JFrame implements WindowListener{
         txtDescrizione.setText(currentScene.getDescription());
         txtForza.setText(Integer.toString(currentScene.getStrength()));
         txtTecnica.setText(Integer.toString(currentScene.getTechnique()));
-        System.out.println(currentScene.getConditions().getCondition());
-        String bin = convDecToBin(currentScene.getConditions().getCondition());
+
         for (JCheckBox a : conditions) {
             a.setSelected(false);
         }
-        for(int i = 0; i < bin.length(); i++){
-            if(bin.charAt(i) == '1'){
+        for(int i = 0; i < conditions.size(); i++){
+            if(((currentScene.getConditions().getCondition()) & ((int) Math.pow(2,i)))>0){
                 conditions.get(i).setSelected(true);
             }
         }
-    }
-
-    private String convDecToBin(int condition) {
-        StringBuilder bin = new StringBuilder("");
-        while (condition > 0) {
-            bin.append(condition % 2);
-            condition /= 2;
-        }
-        return bin.toString();
     }
 
     public void refreshList(){
@@ -262,7 +257,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
             scenes.clear();
-            while ((line = reader.readLine()) != "" && line != null)
+            while ((line = reader.readLine()) != null && !line.equals(""))
                 /*
                  * Condizione != "" altrimenti primo giro array nel costruttore di Scene ha dimensione 1
                  * ritorna quindi errore su value[1]
@@ -331,3 +326,4 @@ public class AbilityFrame extends JFrame implements WindowListener{
     public void windowDeactivated(WindowEvent e) {
     }
 }
+

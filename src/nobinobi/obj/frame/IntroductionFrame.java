@@ -14,7 +14,7 @@ import javax.swing.event.ListSelectionListener;
 
 import nobinobi.obj.editable.*;
 
-public class SceneFrame extends JFrame implements WindowListener{
+public class IntroductionFrame extends JFrame implements WindowListener{
     private JTextField txtTitolo;
     private JTextArea txtDescrizione;
     private JTextField txtImmagine;
@@ -33,7 +33,7 @@ public class SceneFrame extends JFrame implements WindowListener{
     private IntroductionEditable currentScene = new IntroductionEditable();
     private boolean isNew = true;
 
-    public SceneFrame() {
+    public IntroductionFrame() {
         super("Scene Editor");
         setSize(800, 600);
         addWindowListener(this);
@@ -94,7 +94,7 @@ public class SceneFrame extends JFrame implements WindowListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
-                    PrintWriter writer = new PrintWriter(new FileOutputStream("nobinobi/obj/saves/scenes.csv"));
+                    PrintWriter writer = new PrintWriter(new FileOutputStream("nobinobi/obj/saves/introductions.csv"));
                     for (IntroductionEditable ie : scenes) {
                         ie.saveToFile(writer);
                     }
@@ -210,13 +210,13 @@ public class SceneFrame extends JFrame implements WindowListener{
     }
 
     private void loadScenes() {
-        File file = new File("nobinobi/obj/saves/scenes.csv");
+        File file = new File("nobinobi/obj/saves/introductions.csv");
         createFileIfNotExists(file);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
             scenes.clear();
-            while ((line = reader.readLine()) != "" && line != null)
+            while ((line = reader.readLine()) != null && !line.equals(""))
             /*
             * Condizione != "" altrimenti primo giro array nel costruttore di Scene ha dimensione 1
             * ritorna quindi errore su value[1]

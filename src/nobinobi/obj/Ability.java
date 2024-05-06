@@ -106,4 +106,13 @@ public class Ability {
         return s;
     }
 
+    /**
+     * Metodo toString della classe obj
+     * @return String
+     */
+    @Override
+    public String toString(){
+        return name;
+    }
+
 }
