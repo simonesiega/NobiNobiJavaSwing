@@ -9,8 +9,6 @@ import java.io.*;
 import java.util.Vector;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import nobinobi.obj.editable.*;
 
@@ -19,17 +17,17 @@ public class IntroductionFrame extends JFrame implements WindowListener{
     private JTextArea txtDescrizione;
     private JTextField txtImmagine;
     private JPanel pnlButtons;
-    private JButton btnLoad;
+    private JButton btnDelete;
     private JButton btnNew;
     private JButton btnSave;
     private JButton btnUpdate;
 
     private JList<IntroductionEditable> lstScene;
 
-    private Font f = new Font("Arial", Font.PLAIN, 18);
-    private Font fb = new Font("Arial", Font.BOLD, 18);
+    private final Font f = new Font("Arial", Font.PLAIN, 18);
+    private final Font fb = new Font("Arial", Font.BOLD, 18);
 
-    private Vector<IntroductionEditable> scenes = new Vector<IntroductionEditable>();
+    private final Vector<IntroductionEditable> scenes = new Vector<>();
     private IntroductionEditable currentScene = new IntroductionEditable();
     private boolean isNew = true;
 
@@ -68,43 +66,44 @@ public class IntroductionFrame extends JFrame implements WindowListener{
 
         c.gridy++;
         c.weighty = 9;
-        lstScene = new JList<IntroductionEditable>();
-        lstScene.addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (lstScene.getSelectedValue() != null){
-                    currentScene = lstScene.getSelectedValue();
-                    isNew = false;
-                    refreshDetail();
-                }
+        lstScene = new JList<>();
+        lstScene.addListSelectionListener(_ -> {
+            if (lstScene.getSelectedValue() != null){
+                currentScene = lstScene.getSelectedValue();
+                isNew = false;
+                refreshDetail();
             }
-
         });
         pnl.add(lstScene, c);
 
         pnlButtons = new JPanel();
         pnlButtons.setLayout(new GridLayout(1, 0));
-        btnLoad = new JButton("Carica");
-        btnLoad.setFont(fb);
-        pnlButtons.add(btnLoad);
+        btnDelete = new JButton("Elimina");
+        btnDelete.setFont(fb);
+        btnDelete.addActionListener(_ -> {
+            scenes.remove(currentScene);
+            if(scenes.isEmpty()){
+                currentScene = new IntroductionEditable();
+            }else{
+                currentScene = scenes.getLast();
+            }
+            refreshList();
+            refreshDetail();
+        });
+        pnlButtons.add(btnDelete);
         btnSave = new JButton("Salva");
         btnSave.setFont(fb);
-        btnSave.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try{
-                    PrintWriter writer = new PrintWriter(new FileOutputStream("nobinobi/obj/saves/introductions.csv"));
-                    for (IntroductionEditable ie : scenes) {
-                        ie.saveToFile(writer);
-                    }
-                    writer.close();
+        btnSave.addActionListener(_ -> {
+            try{
+                PrintWriter writer = new PrintWriter(new FileOutputStream("nobinobi/obj/saves/introductions.csv"));
+                for (IntroductionEditable ie : scenes) {
+                    ie.saveToFile(writer);
                 }
-                catch(IOException ioe){
-                    System.out.println(ioe.getMessage());
-                }
+                writer.close();
             }
-
+            catch(IOException ioe){
+                System.out.println(ioe.getMessage());
+            }
         });
         pnlButtons.add(btnSave);
         c.gridy++;
@@ -161,31 +160,23 @@ public class IntroductionFrame extends JFrame implements WindowListener{
         pnlButtons.setLayout(new GridLayout(1, 5));
         btnNew = new JButton("Nuovo");
         btnNew.setFont(fb);
-        btnNew.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currentScene = new IntroductionEditable();
-                isNew = true;
-                refreshDetail();
-            }
-
+        btnNew.addActionListener(_ -> {
+            currentScene = new IntroductionEditable();
+            isNew = true;
+            refreshDetail();
         });
         pnlButtons.add(btnNew);
         btnUpdate = new JButton("Aggiorna");
         btnUpdate.setFont(fb);
-        btnUpdate.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currentScene.setTitle(txtTitolo.getText());
-                currentScene.setDescription(txtDescrizione.getText());
-                currentScene.setImage(txtImmagine.getText());
-                if (isNew){
-                    scenes.add(currentScene);
-                    isNew = false;
-                }
-                refreshList();
+        btnUpdate.addActionListener(_ -> {
+            currentScene.setTitle(txtTitolo.getText());
+            currentScene.setDescription(txtDescrizione.getText());
+            currentScene.setImage(txtImmagine.getText());
+            if (isNew){
+                scenes.add(currentScene);
+                isNew = false;
             }
-
+            refreshList();
         });
         pnlButtons.add(btnUpdate);
         c.gridy++;
@@ -216,11 +207,11 @@ public class IntroductionFrame extends JFrame implements WindowListener{
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
             scenes.clear();
-            while ((line = reader.readLine()) != null && !line.equals(""))
-            /*
-            * Condizione != "" altrimenti primo giro array nel costruttore di Scene ha dimensione 1
-            * ritorna quindi errore su value[1]
-            */
+            while ((line = reader.readLine()) != null && !line.isEmpty())
+                /*
+                 * Condizione != "" altrimenti primo giro array nel costruttore di Scene ha dimensione 1
+                 * ritorna quindi errore su value[1]
+                 */
             {
                 scenes.add(new IntroductionEditable(line));
             }

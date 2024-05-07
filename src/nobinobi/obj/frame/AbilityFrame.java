@@ -4,12 +4,8 @@ import nobinobi.obj.*;
 import nobinobi.obj.editable.*;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.text.PlainDocument;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.*;
@@ -22,7 +18,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
     private JTextField txtTecnica;
     private final Vector<JCheckBox> conditions = new Vector<>();
     private JPanel pnlButtons;
-    private JButton btnLoad;
+    private JButton btnDelete;
     private JButton btnNew;
     private JButton btnSave;
     private JButton btnUpdate;
@@ -71,8 +67,8 @@ public class AbilityFrame extends JFrame implements WindowListener{
 
         c.gridy++;
         c.weighty = 9;
-        lstScene = new JList<AbilityEditable>();
-        lstScene.addListSelectionListener(e -> {
+        lstScene = new JList<>();
+        lstScene.addListSelectionListener(_ -> {
             if (lstScene.getSelectedValue() != null){
                 currentScene = lstScene.getSelectedValue();
                 isNew = false;
@@ -83,12 +79,22 @@ public class AbilityFrame extends JFrame implements WindowListener{
 
         pnlButtons = new JPanel();
         pnlButtons.setLayout(new GridLayout(1, 0));
-        btnLoad = new JButton("Carica");
-        btnLoad.setFont(fb);
-        pnlButtons.add(btnLoad);
+        btnDelete = new JButton("Elimina");
+        btnDelete.setFont(fb);
+        btnDelete.addActionListener(_ -> {
+            scenes.remove(currentScene);
+            if(scenes.isEmpty()){
+                currentScene = new AbilityEditable();
+            }else{
+                currentScene = scenes.getLast();
+            }
+            refreshList();
+            refreshDetail();
+        });
+        pnlButtons.add(btnDelete);
         btnSave = new JButton("Salva");
         btnSave.setFont(fb);
-        btnSave.addActionListener(e -> {
+        btnSave.addActionListener(_ -> {
             try{
                 PrintWriter writer = new PrintWriter(new FileOutputStream("nobinobi/obj/saves/abilities.csv"));
                 for (AbilityEditable ie : scenes) {
@@ -185,7 +191,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
         pnlButtons.setLayout(new GridLayout(1, 5));
         btnNew = new JButton("Nuovo");
         btnNew.setFont(fb);
-        btnNew.addActionListener(e -> {
+        btnNew.addActionListener(_ -> {
             currentScene = new AbilityEditable();
             isNew = true;
             refreshDetail();
@@ -193,7 +199,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
         pnlButtons.add(btnNew);
         btnUpdate = new JButton("Aggiorna");
         btnUpdate.setFont(fb);
-        btnUpdate.addActionListener(e -> {
+        btnUpdate.addActionListener(_ -> {
             currentScene.setName(txtName.getText());
             currentScene.setDescription(txtDescrizione.getText());
             currentScene.setStrength(Integer.parseInt(txtForza.getText()));
@@ -201,7 +207,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
             int flag = 0;
             for(int i = 0; i < conditions.size(); i++){
                 if(conditions.get(i).isSelected()){
-                    flag += Math.pow(2,i);
+                    flag += (int) Math.pow(2,i);
                 }
             }
             currentScene.setConditions(new Condition(flag));
@@ -257,7 +263,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
             scenes.clear();
-            while ((line = reader.readLine()) != null && !line.equals(""))
+            while ((line = reader.readLine()) != null && !line.isEmpty())
                 /*
                  * Condizione != "" altrimenti primo giro array nel costruttore di Scene ha dimensione 1
                  * ritorna quindi errore su value[1]

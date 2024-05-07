@@ -90,7 +90,4 @@ abstract class Scene {
                 "DESCRIPTION: "+description+"\n"+
                 "IMAGE: "+image+"\n";
     }
-
-
-
 }
