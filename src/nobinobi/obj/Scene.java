@@ -78,7 +78,8 @@ abstract class Scene {
      * @param out oggetto PrintWriter usato per scrivere
      */
     public void saveToFile(PrintWriter out){
-        out.println(this.getTitle()+"#"+this.getDescription()+"#"+this.getImage() +"#");
+        // out.println(this.getTitle()+"#"+this.getDescription()+"#"+this.getImage() +"#");
+        out.println(this.getTitle());
     }
 
     /**
@@ -86,8 +87,7 @@ abstract class Scene {
      * @return stringa
      */
     public String toString(){
-        return "TITLE: "+title+"\n"+
-                "DESCRIPTION: "+description+"\n"+
-                "IMAGE: "+image+"\n";
+        // return "TITLE: "+title+"\n"+ "DESCRIPTION: "+description+"\n"+ "IMAGE: "+image+"\n";
+        return title;
     }
 }

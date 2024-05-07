@@ -169,7 +169,11 @@ public class IntroductionFrame extends JFrame implements WindowListener{
         btnUpdate = new JButton("Aggiorna");
         btnUpdate.setFont(fb);
         btnUpdate.addActionListener(_ -> {
-            currentScene.setTitle(txtTitolo.getText());
+            if (txtTitolo.getText().isEmpty()){
+                currentScene.setTitle("--");
+            } else {
+                currentScene.setTitle(txtTitolo.getText());
+            }
             currentScene.setDescription(txtDescrizione.getText());
             currentScene.setImage(txtImmagine.getText());
             if (isNew){

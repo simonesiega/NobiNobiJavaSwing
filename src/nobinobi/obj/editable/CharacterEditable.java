@@ -19,6 +19,10 @@ public class CharacterEditable extends Character {
         super();
     }
 
+    public CharacterEditable(String l) {
+        super(l);
+    }
+
     /*
      * Setter della classe ability
      */

@@ -32,6 +32,4 @@ public class IntroductionEditable extends Introduction{
         this.image = image;
     }
 
-
-
 }

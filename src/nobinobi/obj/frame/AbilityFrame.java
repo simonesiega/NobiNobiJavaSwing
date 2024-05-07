@@ -200,7 +200,11 @@ public class AbilityFrame extends JFrame implements WindowListener{
         btnUpdate = new JButton("Aggiorna");
         btnUpdate.setFont(fb);
         btnUpdate.addActionListener(_ -> {
-            currentScene.setName(txtName.getText());
+            if (txtName.getText().isEmpty()){
+                currentScene.setName("--");
+            } else {
+                currentScene.setName(txtName.getText());
+            }
             currentScene.setDescription(txtDescrizione.getText());
             currentScene.setStrength(Integer.parseInt(txtForza.getText()));
             currentScene.setTechnique(Integer.parseInt(txtTecnica.getText()));
