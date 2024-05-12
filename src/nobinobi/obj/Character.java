@@ -67,7 +67,7 @@ public class Character {
         this.description = description;
         this.image = image;
         abilities = new Ability[6];
-        cards = new ArrayList<Card>(0);
+        cards = new ArrayList<>(0);
     }
 
     /*
@@ -182,15 +182,15 @@ public class Character {
      * @return stringa da stampare
      */
     public String toFileString(){
-        String s = name + "#" + genre + "#" + image + "#" + description + "#" + strength + "#" + technique + "#";
+        StringBuilder s = new StringBuilder(name + "#" + genre + "#" + image + "#" + description + "#" + strength + "#" + technique + "#");
 
         for(int i = 0; i < abilities.length-1;i++){
-            s += abilities[i].toFileString();
-            s += "@@";
+            s.append(abilities[i].toFileString());
+            s.append("@@");
         }
-        s += abilities[abilities.length-1].toFileString();
+        s.append(abilities[abilities.length - 1].toFileString());
 
-        return s;
+        return s.toString();
     }
 
 

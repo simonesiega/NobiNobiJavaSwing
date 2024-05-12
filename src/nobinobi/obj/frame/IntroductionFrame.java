@@ -254,9 +254,22 @@ public class IntroductionFrame extends JFrame implements WindowListener{
     public void windowOpened(WindowEvent e) {
     }
 
+    /**
+     * Quando la pagina viene chiusa salva automaticamente tutte le introduzioni
+     * @param e the event to be processed
+     */
     @Override
     public void windowClosing(WindowEvent e) {
-        System.exit(-1);
+        try{
+            PrintWriter writer = new PrintWriter(new FileOutputStream("nobinobi/obj/saves/introductions.csv"));
+            for (IntroductionEditable ie : scenes) {
+                ie.saveToFile(writer);
+            }
+            writer.close();
+        }
+        catch(IOException ioe){
+            System.out.println(ioe.getMessage());
+        }
     }
 
     @Override

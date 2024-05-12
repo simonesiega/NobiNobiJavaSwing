@@ -174,8 +174,12 @@ public class AbilityFrame extends JFrame implements WindowListener{
 
         // Creazione del pannello per le checkbox
         JPanel checkboxPanel = new JPanel(new GridLayout(0, 4)); // 4 checkbox per riga
-        String[] tecnicaLabels = {"Tutte/Una", "Mercato", "Porto","Città","Villaggio","Castello","Chiesa","Foresta","Prateria","Montagna",
-                "Deserto","Collina","Mare","Lago","Fiume","Luna","Cielo","PNGSingolo","PNGGruppo","PNGFemmina","PNGMaschio"}; // Array di etichette per le checkbox
+        String[] tecnicaLabels =    {"Tutte/Una", "Mercato", "Porto","Città",
+                                     "Villaggio","Castello","Chiesa","Foresta",
+                                     "Prateria","Montagna", "Deserto","Collina",
+                                     "Mare","Lago","Fiume","Luna",
+                                     "Cielo", "PNGSingolo","PNGGruppo","PNGFemmina",
+                                     "PNGMaschio"}; // Array di etichette per le checkbox
         for (String label : tecnicaLabels) {
             JCheckBox checkBox = new JCheckBox(label);
             conditions.add(checkBox);
@@ -186,6 +190,33 @@ public class AbilityFrame extends JFrame implements WindowListener{
         c.gridy++;
         c.weighty = 1;
         pnl.add(checkboxPanel, c);
+
+        JPanel controlPanel = new JPanel(new GridLayout(1, 2)); //2 Cosí si puó aggiungere immediatamente il bottone deseleziona tutto
+
+        JCheckBox selectAllCheckBox = new JCheckBox("Seleziona tutto");
+        selectAllCheckBox.setFont(f);
+        selectAllCheckBox.addActionListener(e -> {
+            for (JCheckBox checkBox : conditions) {
+                checkBox.setSelected(selectAllCheckBox.isSelected());
+            }
+        });
+        controlPanel.add(selectAllCheckBox);
+
+        /*
+        JCheckBox deselectAllCheckBox = new JCheckBox("Deseleziona tutto");
+        deselectAllCheckBox.setFont(f);
+        deselectAllCheckBox.addActionListener(e -> {
+            for (JCheckBox checkBox : conditions) {
+                checkBox.setSelected(!deselectAllCheckBox.isSelected());
+            }
+        });
+        controlPanel.add(deselectAllCheckBox);
+
+         */
+
+        c.gridy++;
+        c.weighty = 1;
+        pnl.add(controlPanel, c);
 
         pnlButtons = new JPanel();
         pnlButtons.setLayout(new GridLayout(1, 5));
@@ -310,9 +341,22 @@ public class AbilityFrame extends JFrame implements WindowListener{
     public void windowOpened(WindowEvent e) {
     }
 
+    /**
+     * Quando la pagina viene chiusa salva automaticamente tutte le introduzioni
+     * @param e the event to be processed
+     */
     @Override
     public void windowClosing(WindowEvent e) {
-        System.exit(-1);
+        try{
+            PrintWriter writer = new PrintWriter(new FileOutputStream("nobinobi/obj/saves/abilities.csv"));
+            for (AbilityEditable ie : scenes) {
+                ie.saveToFile(writer);
+            }
+            writer.close();
+        }
+        catch(IOException ioe){
+            System.out.println(ioe.getMessage());
+        }
     }
 
     @Override

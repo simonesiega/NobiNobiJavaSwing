@@ -102,8 +102,7 @@ public class Ability {
      * @return stringa da stampare
      */
     public String toFileString(){
-        String s = name + "@" + description + "@" + conditions.getCondition() + "@" + strength + "@" + technique + "\n";
-        return s;
+        return name + "@" + description + "@" + conditions.getCondition() + "@" + strength + "@" + technique + "\n";
     }
 
     /**

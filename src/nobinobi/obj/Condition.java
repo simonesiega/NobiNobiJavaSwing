@@ -38,148 +38,87 @@ public class Condition {
     */
 
     public boolean isMarket(){
-        if((flag & 2) == 2){
-            return true;
-        }
-        return false;
+        return (flag & 2) == 2;
     }
 
     public boolean isPort(){
-        if((flag & 4) == 4){
-            return true;
-        }
-        return false;
+        return (flag & 4) == 4;
     }
 
     public boolean isCity(){
-        if((flag & 8) == 8){
-            return true;
-        }
-        return false;
+        return (flag & 8) == 8;
     }
 
     public boolean isVillage(){
-        if((flag & 16) == 16){
-            return true;
-        }
-        return false;
+        return (flag & 16) == 16;
     }
 
     public boolean isCastle(){
-        if((flag & 32) == 32){
-            return true;
-        }
-        return false;
+        return (flag & 32) == 32;
     }
 
     public boolean isChurch(){
-        if((flag & 64) == 64){
-            return true;
-        }
-        return false;
+        return (flag & 64) == 64;
     }
 
     public boolean isForest(){
-        if((flag & 128) == 128){
-            return true;
-        }
-        return false;
+        return (flag & 128) == 128;
     }
 
     public boolean isPrairie(){
-        if((flag & 256) == 256){
-            return true;
-        }
-        return false;
+        return (flag & 256) == 256;
     }
 
     public boolean isMountain(){
-        if((flag & 512) == 512){
-            return true;
-        }
-        return false;
+        return (flag & 512) == 512;
     }
 
     public boolean isDesert(){
-        if((flag & 1024) == 1024){
-            return true;
-        }
-        return false;
+        return (flag & 1024) == 1024;
     }
 
     public boolean isHill(){
-        if((flag & 2048) == 2048){
-            return true;
-        }
-        return false;
+        return (flag & 2048) == 2048;
     }
 
     public boolean isSea(){
-        if((flag & 4096) == 4096){
-            return true;
-        }
-        return false;
+        return (flag & 4096) == 4096;
     }
 
     public boolean isLake(){
-        if((flag & 8192) == 8192){
-            return true;
-        }
-        return false;
+        return (flag & 8192) == 8192;
     }
 
     public boolean isRiver(){
-        if((flag & 16384) == 16384){
-            return true;
-        }
-        return false;
+        return (flag & 16384) == 16384;
     }
 
     public boolean isMoon(){
-        if((flag & 32768) == 32768){
-            return true;
-        }
-        return false;
+        return (flag & 32768) == 32768;
     }
 
     public boolean isSky(){
-        if((flag & 65536) == 65536){
-            return true;
-        }
-        return false;
+        return (flag & 65536) == 65536;
     }
 
     public boolean isPNGSingle(){
-        if((flag & 131072) == 131072){
-            return true;
-        }
-        return false;
+        return (flag & 131072) == 131072;
     }
 
     public boolean isPNGGroup(){
-        if((flag & 262144) == 262144){
-            return true;
-        }
-        return false;
+        return (flag & 262144) == 262144;
     }
 
     public boolean isPNGFemale(){
-        if((flag & 524288) == 524288){
-            return true;
-        }
-        return false;
+        return (flag & 524288) == 524288;
     }
 
     public boolean isPNGMale(){
-        if((flag & 1048576) == 1048576){
-            return true;
-        }
-        return false;
+        return (flag & 1048576) == 1048576;
     }
 
     // Getter di flag
     public int getCondition(){
         return flag;
     }
-
 }

@@ -78,8 +78,8 @@ abstract class Scene {
      * @param out oggetto PrintWriter usato per scrivere
      */
     public void saveToFile(PrintWriter out){
-        // out.println(this.getTitle()+"#"+this.getDescription()+"#"+this.getImage() +"#");
-        out.println(this.getTitle());
+        out.println(this.getTitle()+"#"+this.getDescription()+"#"+this.getImage() +"#");
+        // out.println(this.getTitle());
     }
 
     /**

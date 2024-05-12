@@ -19,7 +19,7 @@ public class Introduction extends Scene {
      */
     public Introduction(){
         super();
-    };
+    }
 
     /**
      * Super del costruttore che costruisce l'introduzione partendo dal file
