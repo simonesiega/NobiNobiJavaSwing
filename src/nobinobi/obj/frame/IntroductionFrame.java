@@ -67,7 +67,7 @@ public class IntroductionFrame extends JFrame implements WindowListener{
         c.gridy++;
         c.weighty = 9;
         lstScene = new JList<>();
-        lstScene.addListSelectionListener(_ -> {
+        lstScene.addListSelectionListener(e -> {
             if (lstScene.getSelectedValue() != null){
                 currentScene = lstScene.getSelectedValue();
                 isNew = false;
@@ -80,7 +80,7 @@ public class IntroductionFrame extends JFrame implements WindowListener{
         pnlButtons.setLayout(new GridLayout(1, 0));
         btnDelete = new JButton("Elimina");
         btnDelete.setFont(fb);
-        btnDelete.addActionListener(_ -> {
+        btnDelete.addActionListener(e -> {
             scenes.remove(currentScene);
             if(scenes.isEmpty()){
                 currentScene = new IntroductionEditable();
@@ -93,7 +93,7 @@ public class IntroductionFrame extends JFrame implements WindowListener{
         pnlButtons.add(btnDelete);
         btnSave = new JButton("Salva");
         btnSave.setFont(fb);
-        btnSave.addActionListener(_ -> {
+        btnSave.addActionListener(e -> {
             try{
                 PrintWriter writer = new PrintWriter(new FileOutputStream("nobinobi/obj/saves/introductions.csv"));
                 for (IntroductionEditable ie : scenes) {
@@ -160,7 +160,7 @@ public class IntroductionFrame extends JFrame implements WindowListener{
         pnlButtons.setLayout(new GridLayout(1, 5));
         btnNew = new JButton("Nuovo");
         btnNew.setFont(fb);
-        btnNew.addActionListener(_ -> {
+        btnNew.addActionListener(e -> {
             currentScene = new IntroductionEditable();
             isNew = true;
             refreshDetail();
@@ -168,7 +168,7 @@ public class IntroductionFrame extends JFrame implements WindowListener{
         pnlButtons.add(btnNew);
         btnUpdate = new JButton("Aggiorna");
         btnUpdate.setFont(fb);
-        btnUpdate.addActionListener(_ -> {
+        btnUpdate.addActionListener(e -> {
             if (txtTitolo.getText().isEmpty()){
                 currentScene.setTitle("--");
             } else {

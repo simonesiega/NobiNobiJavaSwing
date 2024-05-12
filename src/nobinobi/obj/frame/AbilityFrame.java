@@ -68,7 +68,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
         c.gridy++;
         c.weighty = 9;
         lstScene = new JList<>();
-        lstScene.addListSelectionListener(_ -> {
+        lstScene.addListSelectionListener(e -> {
             if (lstScene.getSelectedValue() != null){
                 currentScene = lstScene.getSelectedValue();
                 isNew = false;
@@ -81,7 +81,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
         pnlButtons.setLayout(new GridLayout(1, 0));
         btnDelete = new JButton("Elimina");
         btnDelete.setFont(fb);
-        btnDelete.addActionListener(_ -> {
+        btnDelete.addActionListener(e -> {
             scenes.remove(currentScene);
             if(scenes.isEmpty()){
                 currentScene = new AbilityEditable();
@@ -94,7 +94,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
         pnlButtons.add(btnDelete);
         btnSave = new JButton("Salva");
         btnSave.setFont(fb);
-        btnSave.addActionListener(_ -> {
+        btnSave.addActionListener(e -> {
             try{
                 PrintWriter writer = new PrintWriter(new FileOutputStream("nobinobi/obj/saves/abilities.csv"));
                 for (AbilityEditable ie : scenes) {
@@ -222,7 +222,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
         pnlButtons.setLayout(new GridLayout(1, 5));
         btnNew = new JButton("Nuovo");
         btnNew.setFont(fb);
-        btnNew.addActionListener(_ -> {
+        btnNew.addActionListener(e -> {
             currentScene = new AbilityEditable();
             isNew = true;
             refreshDetail();
@@ -230,15 +230,23 @@ public class AbilityFrame extends JFrame implements WindowListener{
         pnlButtons.add(btnNew);
         btnUpdate = new JButton("Aggiorna");
         btnUpdate.setFont(fb);
-        btnUpdate.addActionListener(_ -> {
+        btnUpdate.addActionListener(e -> {
             if (txtName.getText().isEmpty()){
                 currentScene.setName("--");
             } else {
                 currentScene.setName(txtName.getText());
             }
             currentScene.setDescription(txtDescrizione.getText());
-            currentScene.setStrength(Integer.parseInt(txtForza.getText()));
-            currentScene.setTechnique(Integer.parseInt(txtTecnica.getText()));
+            if (txtForza.getText().isEmpty()){
+                currentScene.setStrength(0);
+            } else {
+                currentScene.setStrength(Integer.parseInt(txtForza.getText()));
+            }
+            if (txtTecnica.getText().isEmpty()){
+                currentScene.setTechnique(0);
+            } else {
+                currentScene.setTechnique(Integer.parseInt(txtTecnica.getText()));
+            }
             int flag = 0;
             for(int i = 0; i < conditions.size(); i++){
                 if(conditions.get(i).isSelected()){
