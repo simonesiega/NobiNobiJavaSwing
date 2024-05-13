@@ -46,7 +46,7 @@ public class MenuFrame extends JFrame implements WindowListener{
         pnlButtons.setLayout(new GridLayout(1, 0));
         abilityF = new JButton("Ability Frame");
         abilityF.setFont(fb);
-        abilityF.addActionListener(_ -> {
+        abilityF.addActionListener(e -> {
             AbilityFrame aFrame = new AbilityFrame();
             aFrame.setVisible(true);
         });
@@ -55,15 +55,15 @@ public class MenuFrame extends JFrame implements WindowListener{
         pnlButtons.setLayout(new GridLayout(1, 0));
         characterF = new JButton("Character Frame");
         characterF.setFont(fb);
-        characterF.addActionListener(_ -> {
+        characterF.addActionListener(e -> {
             CharacterFrame cFrame = new CharacterFrame();
-            // cFrame.setVisible(true);
+            cFrame.setVisible(true);
         });
         pnlButtons.add(characterF);
 
         introductionF = new JButton("Introduction Frame");
         introductionF.setFont(fb);
-        introductionF.addActionListener(_ -> {
+        introductionF.addActionListener(e -> {
             IntroductionFrame iFrame = new IntroductionFrame();
             iFrame.setVisible(true);
         });
