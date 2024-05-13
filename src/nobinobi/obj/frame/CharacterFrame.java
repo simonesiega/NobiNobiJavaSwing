@@ -1,6 +1,7 @@
 package nobinobi.obj.frame;
 
 import nobinobi.obj.*;
+import nobinobi.obj.Character;
 import nobinobi.obj.editable.*;
 
 import javax.swing.*;
@@ -363,9 +364,6 @@ public class CharacterFrame extends JFrame implements WindowListener{
 
     public void refreshList(){
         lstScene.setListData(scenes);
-        if (!scenes.isEmpty()){
-            System.out.println(scenes.getFirst());
-        }
     }
 
     public void refreshAbilityDescription(String n){
@@ -393,7 +391,6 @@ public class CharacterFrame extends JFrame implements WindowListener{
                  * ritorna quindi errore su value[1]
                  */
             {
-                System.out.println("ebtra");
                 scenes.add(new CharacterEditable(line));
             }
             reader.close();
