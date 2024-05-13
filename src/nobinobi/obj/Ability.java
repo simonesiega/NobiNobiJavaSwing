@@ -94,7 +94,7 @@ public class Ability {
      * @param writer oggetto PrintWriter usato per scrivere
      */
     public void saveToFile(PrintWriter writer){
-        writer.write(toFileString());
+        writer.write(toFileString() + "\n");
     }
 
     /**
@@ -102,7 +102,7 @@ public class Ability {
      * @return stringa da stampare
      */
     public String toFileString(){
-        return name + "@" + description + "@" + conditions.getCondition() + "@" + strength + "@" + technique + "\n";
+        return name + "@" + description + "@" + conditions.getCondition() + "@" + strength + "@" + technique;
     }
 
     /**

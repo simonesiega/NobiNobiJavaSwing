@@ -3,13 +3,13 @@ package nobinobi.obj;
 import java.io.PrintWriter;
 
 public class ChallengeScene extends Scene{
-    private Condition condition;
-    private String description;
-    private int strength;
-    private int technique;
-    private String winDescription;
-    private String lostDescription;
-    private String endCondition;
+    private final Condition condition;
+    private final String description;
+    private final int strength;
+    private final int technique;
+    private final String winDescription;
+    private final String lostDescription;
+    private final Condition endCondition;
 
     public ChallengeScene() {
         this.condition = null;
@@ -18,7 +18,7 @@ public class ChallengeScene extends Scene{
         this.technique = 0;
         this.winDescription = "";
         this.lostDescription = "";
-        this.endCondition = "";
+        this.endCondition = null;
     }
 
     public ChallengeScene(String file){
@@ -28,11 +28,11 @@ public class ChallengeScene extends Scene{
         technique = Integer.parseInt(value[2]);
         winDescription = value[3];
         lostDescription = value[4];
-        endCondition = value[5];
+        endCondition = new Condition(Integer.parseInt(value[5]));
         condition = new Condition(Integer.parseInt(value[6]));
     }
 
-    public ChallengeScene(Condition c, String d, int s, int t, String win, String lost, String end){
+    public ChallengeScene(Condition c, String d, int s, int t, String win, String lost, Condition end){
         this.condition = c;
         this.description = d;
         this.strength = s;
@@ -66,7 +66,7 @@ public class ChallengeScene extends Scene{
         return lostDescription;
     }
 
-    public String getEndCondition () {
+    public Condition getEndCondition () {
         return endCondition;
     }
 

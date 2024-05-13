@@ -6,11 +6,10 @@ import nobinobi.obj.editable.*;
 import javax.swing.*;
 import javax.swing.text.PlainDocument;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.*;
+import java.util.Objects;
 import java.util.Vector;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
@@ -222,6 +221,7 @@ public class CharacterFrame extends JFrame implements WindowListener{
         JPanel checkboxPanel = new JPanel(new GridLayout(0, 4)); // 4 checkbox per riga
         for (Ability a : abilityOpt) {
             JCheckBox checkBox = new JCheckBox(a.getName());
+            abilitiesCheck.add(checkBox);
             checkBox.setFont(f);
             checkboxPanel.add(checkBox);
             checkBox.addMouseListener(new MouseAdapter() {
@@ -271,6 +271,25 @@ public class CharacterFrame extends JFrame implements WindowListener{
             currentScene.setStrength(Integer.parseInt(txtForza.getText()));
             currentScene.setTechnique(Integer.parseInt(txtTecnica.getText()));
             currentScene.setImage(txtImmagine.getText());
+            if(chkM.isSelected()){
+                currentScene.setGenre('M');
+            }else{
+                currentScene.setGenre('F');
+            }
+            Ability[] abi = new Ability[6];
+            int co = 0;
+            for(int i = 0; i < abilitiesCheck.size(); i++){
+                if(abilitiesCheck.get(i).isSelected()){
+                    abi[co] = abilityOpt.get(i);
+                    co++;
+                }
+                if (co == 6){
+                    break;
+                }
+            }
+            currentScene.setAbilities(abi);
+            scenes.add(currentScene);
+            refreshList();
         });
         pnlButtons.add(btnUpdate);
         c.gridy++;
@@ -325,10 +344,28 @@ public class CharacterFrame extends JFrame implements WindowListener{
         txtDescrizione.setText(currentScene.getDescription());
         txtForza.setText(Integer.toString(currentScene.getStrength()));
         txtTecnica.setText(Integer.toString(currentScene.getTechnique()));
+        if(currentScene.getGenre() == 'M'){
+            chkM.setSelected(true);
+            chkF.setSelected(false);
+        }else{
+            chkF.setSelected(true);
+            chkM.setSelected(false);
+        }
+        for(JCheckBox c : abilitiesCheck) {
+            c.setSelected(true);
+            for(int i = 0; i < currentScene.getAbilityCount(); i++) {
+                if (Objects.equals(c.getText(), currentScene.getAbility(i).getName())) {
+                    c.setSelected(true);
+                }
+            }
+        }
     }
 
     public void refreshList(){
         lstScene.setListData(scenes);
+        if (!scenes.isEmpty()){
+            System.out.println(scenes.getFirst());
+        }
     }
 
     public void refreshAbilityDescription(String n){
@@ -356,6 +393,7 @@ public class CharacterFrame extends JFrame implements WindowListener{
                  * ritorna quindi errore su value[1]
                  */
             {
+                System.out.println("ebtra");
                 scenes.add(new CharacterEditable(line));
             }
             reader.close();
@@ -364,12 +402,13 @@ public class CharacterFrame extends JFrame implements WindowListener{
             System.out.println("Errore durante la lettura del file:");
             System.out.println(ioe.getMessage());
         }
-        File file1 = new File("nobinobi/obj/saves/characters.csv");
+
+        File file1 = new File("nobinobi/obj/saves/abilities.csv");
         createFileIfNotExists(file);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file1));
             String line;
-            scenes.clear();
+            abilityOpt.clear();
             while ((line = reader.readLine()) != null && !line.isEmpty())
                 /*
                  * Condizione != "" altrimenti primo giro array nel costruttore di Scene ha dimensione 1
@@ -415,12 +454,21 @@ public class CharacterFrame extends JFrame implements WindowListener{
 
     @Override
     public void windowClosing(WindowEvent e) {
-
+        try{
+            PrintWriter writer = new PrintWriter(new FileOutputStream("nobinobi/obj/saves/characters.csv"));
+            for (CharacterEditable ie : scenes) {
+                ie.saveToFile(writer);
+            }
+            writer.close();
+        }
+        catch(IOException ioe){
+            System.out.println(ioe.getMessage());
+        }
     }
 
     @Override
     public void windowClosed(WindowEvent e) {
-
+        System.exit(-1);
     }
 
     @Override

@@ -42,6 +42,7 @@ public class Character {
 
     public Character(String line) {
         String[] s = line.split("#");
+
         name = s[0];
         genre = s[1].charAt(0);
         image = s[2];
@@ -49,8 +50,10 @@ public class Character {
         strength = Integer.parseInt(s[4]);
         technique = Integer.parseInt(s[5]);
         String[] ab = s[6].split("@@");
-        for (int i = 0; i < abilities.length; i++) {
-            abilities[i].loadFromFile(ab[i]);
+
+        for (String string : ab) {
+            Ability tmp = new Ability(string);
+            tmp.loadFromFile(string);
         }
     }
 
@@ -189,10 +192,15 @@ public class Character {
             s.append("@@");
         }
         s.append(abilities[abilities.length - 1].toFileString());
+        s.append("\n");
 
         return s.toString();
     }
 
+    @Override
+    public String toString(){
+        return name;
+    }
 
 
 
