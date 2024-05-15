@@ -21,7 +21,7 @@ public class Character {
     // Tecnica
     protected int technique;
     // Array che contiene le abilitá (6)
-    protected Ability[] abilities;
+    protected Ability[] abilities = new Ability[6];
     // Arraylist che contiene le carte (luce o ombra - nerf/buff)
     protected ArrayList<Card> cards;
 
@@ -36,7 +36,7 @@ public class Character {
         this.description = "";
         this.strength = 0;
         this.technique = 0;
-        this.abilities = new Ability[0];
+        this.abilities = new Ability[6];
         this.cards = new ArrayList<>();
     }
 
@@ -49,11 +49,14 @@ public class Character {
         description = s[3];
         strength = Integer.parseInt(s[4]);
         technique = Integer.parseInt(s[5]);
+
+        System.out.println(s[6]);
         String[] ab = s[6].split("@@");
 
-        for (String string : ab) {
-            Ability tmp = new Ability(string);
-            tmp.loadFromFile(string);
+        for (int i = 0; i < ab.length; i++) {
+            abilities[i] = new Ability(ab[i]);
+            Ability tmp = new Ability(ab[i]);
+            tmp.loadFromFile(ab[i]);
         }
     }
 
@@ -199,6 +202,13 @@ public class Character {
 
     @Override
     public String toString(){
-        return name;
+        //Da commentare quando si trova l errore
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < abilities.length; i++) {
+            sb.append(abilities[i].toString());
+        }
+        sb.append("\n");
+        sb.append(name);
+        return sb.toString();
     }
 }

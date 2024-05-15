@@ -120,6 +120,7 @@ public class CharacterFrame extends JFrame implements WindowListener{
         btnSave = new JButton("Salva");
         btnSave.setFont(fb);
         btnSave.addActionListener(e -> {
+            System.out.println(scenes.getFirst());
             try{
                 PrintWriter writer = new PrintWriter(new FileOutputStream("nobinobi/obj/saves/characters.csv"));
                 for (CharacterEditable ie : scenes) {
