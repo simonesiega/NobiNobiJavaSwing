@@ -74,7 +74,6 @@ public class CharacterFrame extends JFrame implements WindowListener{
         add(createAbilityPanel(), c);
 
         refreshList();
-        refreshDetail();
     }
 
     private JPanel createListPanel(){

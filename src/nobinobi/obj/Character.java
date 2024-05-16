@@ -21,7 +21,7 @@ public class Character {
     // Tecnica
     protected int technique;
     // Array che contiene le abilitá (6)
-    protected Ability[] abilities = new Ability[6];
+    protected Ability[] abilities;
     // Arraylist che contiene le carte (luce o ombra - nerf/buff)
     protected ArrayList<Card> cards;
 
@@ -50,9 +50,8 @@ public class Character {
         strength = Integer.parseInt(s[4]);
         technique = Integer.parseInt(s[5]);
 
-        System.out.println(s[6]);
         String[] ab = s[6].split("@@");
-
+        abilities = new Ability[6];
         for (int i = 0; i < ab.length; i++) {
             abilities[i] = new Ability(ab[i]);
             Ability tmp = new Ability(ab[i]);
