@@ -3,14 +3,16 @@ package nobinobi.obj;
 import java.io.PrintWriter;
 
 public class Epilogue extends Scene{
-    private Condition condition;
-    private String description;
-    private int strength;
-    private int technique;
-    private String winDescription;
-    private String lostDescription;
+    protected String name;
+    protected Condition condition;
+    protected String description;
+    protected int strength;
+    protected int technique;
+    protected String winDescription;
+    protected String lostDescription;
 
     public Epilogue(){
+        this.name = "";
         this.condition = null;
         this.description = "";
         this.strength = 0;
@@ -19,23 +21,29 @@ public class Epilogue extends Scene{
         this.lostDescription = "";
     }
 
-    public Epilogue(String file){
-        String[] value = file.split("#");
-        description=value[0];
-        strength = Integer.parseInt(value[1]);
-        technique = Integer.parseInt(value[2]);
-        winDescription = value[3];
-        lostDescription = value[4];
-        condition = new Condition(Integer.parseInt(value[5]));
+    public Epilogue(String line){
+        String[] value = line.split("#");
+        name = value[0];
+        description=value[1];
+        strength = Integer.parseInt(value[2]);
+        technique = Integer.parseInt(value[3]);
+        winDescription = value[4];
+        lostDescription = value[5];
+        condition = new Condition(Integer.parseInt(value[6]));
     }
 
-    public Epilogue(Condition c, String d, int s, int t, String win, String lost){
+    public Epilogue(String n, Condition c, String d, int s, int t, String win, String lost){
+        this.name = n;
         this.condition = c;
         this.description = d;
         this.strength = s;
         this.technique = t;
         this.winDescription = win;
         this.lostDescription = lost;
+    }
+
+    public String getName () {
+        return name;
     }
 
     public Condition getCondition () {

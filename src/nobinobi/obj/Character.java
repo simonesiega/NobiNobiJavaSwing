@@ -201,7 +201,7 @@ public class Character {
 
     @Override
     public String toString(){
-        //Da commentare quando si trova l errore
+        /*
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < abilities.length; i++) {
             sb.append(abilities[i].toString());
@@ -209,5 +209,7 @@ public class Character {
         sb.append("\n");
         sb.append(name);
         return sb.toString();
+        */
+        return name;
     }
 }

@@ -68,6 +68,25 @@ public class MenuFrame extends JFrame implements WindowListener{
             iFrame.setVisible(true);
         });
         pnlButtons.add(introductionF);
+
+        pnlButtons.setLayout(new GridLayout(1, 0));
+        characterF = new JButton("Epilogue Frame");
+        characterF.setFont(fb);
+        characterF.addActionListener(e -> {
+            EpilogueFrame eFrame = new EpilogueFrame();
+            eFrame.setVisible(true);
+        });
+        pnlButtons.add(characterF);
+
+        pnlButtons.setLayout(new GridLayout(1, 0));
+        characterF = new JButton("ChallengeScene Frame");
+        characterF.setFont(fb);
+        characterF.addActionListener(e -> {
+            ChallengeSceneFrame sFrame = new ChallengeSceneFrame();
+            sFrame.setVisible(true);
+        });
+        pnlButtons.add(characterF);
+
         c.gridy++;
         c.weighty = 0.5;
         pnl.add(pnlButtons, c);
