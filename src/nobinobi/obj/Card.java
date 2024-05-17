@@ -31,6 +31,15 @@ public class Card {
         this.technique = 0;
     }
 
+    public Card(String line){
+        String[] l = line.split("#");
+        name = l[0];
+        description = l[1];
+        conditions = new Condition(Integer.parseInt(l[2]));
+        strength = Integer.parseInt(l[3]);
+        technique = Integer.parseInt(l[4]);
+    }
+
     /**
      * Costruttore della carta
      * @param conditions Condizione
@@ -94,5 +103,8 @@ public class Card {
         return s;
     }
 
-
+    @Override
+    public String toString(){
+        return name;
+    }
 }

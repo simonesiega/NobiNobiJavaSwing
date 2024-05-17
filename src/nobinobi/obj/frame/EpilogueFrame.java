@@ -90,7 +90,7 @@ public class EpilogueFrame extends JFrame implements WindowListener {
             if(scenes.isEmpty()){
                 currentScene = new EpilogueEditable();
             }else{
-                currentScene = scenes.getLast();
+                currentScene = scenes.lastElement();
             }
             refreshList();
             refreshDetail();

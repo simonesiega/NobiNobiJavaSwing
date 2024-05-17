@@ -17,7 +17,7 @@ public class MenuFrame extends JFrame implements WindowListener{
 
     public MenuFrame() {
         super("Menu Game");
-        setSize(800, 600);
+        setSize(1600, 600);
         addWindowListener(this);
 
         GridBagLayout layout = new GridBagLayout();
@@ -86,6 +86,14 @@ public class MenuFrame extends JFrame implements WindowListener{
             sFrame.setVisible(true);
         });
         pnlButtons.add(characterF);
+
+        introductionF = new JButton("Card Frame");
+        introductionF.setFont(fb);
+        introductionF.addActionListener(e -> {
+            CardFrame cardFrame = new CardFrame();
+            cardFrame.setVisible(true);
+        });
+        pnlButtons.add(introductionF);
 
         c.gridy++;
         c.weighty = 0.5;

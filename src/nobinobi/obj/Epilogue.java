@@ -80,7 +80,7 @@ public class Epilogue extends Scene{
 
     @Override
     public void saveToFile(PrintWriter out){
-        out.println(description + "#" + strength + "#" + technique + "#" + winDescription + "#" + lostDescription + "#" + condition);
+        out.println(name + "#" + description + "#" + strength + "#" + technique + "#" + winDescription + "#" + lostDescription + "#" + condition.getCondition());
     }
 
     @Override

@@ -15,6 +15,8 @@ public class CardEditable extends Card {
         super();
     }
 
+    public CardEditable(String l){super(l);}
+
     /*
      * Setter della classe ability
      */

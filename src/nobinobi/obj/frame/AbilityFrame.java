@@ -86,7 +86,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
             if(scenes.isEmpty()){
                 currentScene = new AbilityEditable();
             }else{
-                currentScene = scenes.getLast();
+                currentScene = scenes.lastElement();
             }
             refreshList();
             refreshDetail();

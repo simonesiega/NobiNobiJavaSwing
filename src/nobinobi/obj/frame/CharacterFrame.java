@@ -110,7 +110,7 @@ public class CharacterFrame extends JFrame implements WindowListener{
             if(scenes.isEmpty()){
                 currentScene = new CharacterEditable();
             }else{
-                currentScene = scenes.getLast();
+                currentScene = scenes.lastElement();
             }
             refreshList();
             refreshDetail();
@@ -119,7 +119,7 @@ public class CharacterFrame extends JFrame implements WindowListener{
         btnSave = new JButton("Salva");
         btnSave.setFont(fb);
         btnSave.addActionListener(e -> {
-            System.out.println(scenes.getFirst());
+            System.out.println(scenes.firstElement());
             try{
                 PrintWriter writer = new PrintWriter(new FileOutputStream("nobinobi/obj/saves/characters.csv"));
                 for (CharacterEditable ie : scenes) {
@@ -279,17 +279,33 @@ public class CharacterFrame extends JFrame implements WindowListener{
             }
             Ability[] abi = new Ability[6];
             int co = 0;
+
             for(int i = 0; i < abilitiesCheck.size(); i++){
                 if(abilitiesCheck.get(i).isSelected()){
                     abi[co] = abilityOpt.get(i);
                     co++;
                 }
-                if (co == 6){
+                if (co == 6) {
                     break;
                 }
             }
+            if (co < 6){
+                for(int i = 0; i < abilitiesCheck.size(); i++){
+                    if(!abilitiesCheck.get(i).isSelected()){
+                        abi[co] = abilityOpt.get(i);
+                        co++;
+                    }
+                    if (co == 6) {
+                        break;
+                    }
+                }
+            }
+            if (isNew){
+                scenes.add(currentScene);
+                isNew = false;
+            }
+
             currentScene.setAbilities(abi);
-            scenes.add(currentScene);
             refreshList();
         });
         pnlButtons.add(btnUpdate);
@@ -352,12 +368,20 @@ public class CharacterFrame extends JFrame implements WindowListener{
             chkF.setSelected(true);
             chkM.setSelected(false);
         }
+        int counter = 0;
         for(JCheckBox c : abilitiesCheck) {
-            c.setSelected(true);
+            c.setSelected(false);
             for(int i = 0; i < currentScene.getAbilityCount(); i++) {
-                if (Objects.equals(c.getText(), currentScene.getAbility(i).getName())) {
-                    c.setSelected(true);
+                if (currentScene.getAbility(i) != null){
+                    if (Objects.equals(c.getText(), currentScene.getAbility(i).getName())) {
+                        c.setSelected(true);
+                        counter ++;
+                        System.out.println(i);
+                    }
                 }
+            }
+            if (counter == 6){
+                break;
             }
         }
     }
