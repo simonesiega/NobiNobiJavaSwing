@@ -95,7 +95,7 @@ public class IntroductionFrame extends JFrame implements WindowListener{
         btnSave.setFont(fb);
         btnSave.addActionListener(e -> {
             try{
-                PrintWriter writer = new PrintWriter(new FileOutputStream("src/introductions.csv"));
+                PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/introductions.csv"));
                 for (IntroductionEditable ie : scenes) {
                     ie.saveToFile(writer);
                 }
@@ -205,7 +205,7 @@ public class IntroductionFrame extends JFrame implements WindowListener{
     }
 
     private void loadScenes() {
-        File file = new File("src/introductions.csv");
+        File file = new File("src/saves/introductions.csv");
         createFileIfNotExists(file);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -261,7 +261,7 @@ public class IntroductionFrame extends JFrame implements WindowListener{
     @Override
     public void windowClosing(WindowEvent e) {
         try{
-            PrintWriter writer = new PrintWriter(new FileOutputStream("src/introductions.csv"));
+            PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/introductions.csv"));
             for (IntroductionEditable ie : scenes) {
                 ie.saveToFile(writer);
             }
@@ -273,9 +273,7 @@ public class IntroductionFrame extends JFrame implements WindowListener{
     }
 
     @Override
-    public void windowClosed(WindowEvent e) {
-        System.exit(-1);
-    }
+    public void windowClosed(WindowEvent e) {}
 
     @Override
     public void windowIconified(WindowEvent e) {

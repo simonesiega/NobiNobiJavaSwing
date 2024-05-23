@@ -41,6 +41,7 @@ public class Character {
     }
 
     public Character(String line) {
+        this.cards = new ArrayList<>();
         String[] s = line.split("#");
 
         name = s[0];

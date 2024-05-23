@@ -120,7 +120,7 @@ public class CharacterFrame extends JFrame implements WindowListener{
         btnSave.addActionListener(e -> {
             System.out.println(scenes.firstElement());
             try{
-                PrintWriter writer = new PrintWriter(new FileOutputStream("src/characters.csv"));
+                PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/characters.csv"));
                 for (CharacterEditable ie : scenes) {
                     ie.saveToFile(writer);
                 }
@@ -402,7 +402,7 @@ public class CharacterFrame extends JFrame implements WindowListener{
     }
 
     private void loadScenes() {
-        File file = new File("src/characters.csv");
+        File file = new File("src/saves/characters.csv");
         createFileIfNotExists(file);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -423,7 +423,7 @@ public class CharacterFrame extends JFrame implements WindowListener{
             System.out.println(ioe.getMessage());
         }
 
-        File file1 = new File("src/abilities.csv");
+        File file1 = new File("src/saves/abilities.csv");
         createFileIfNotExists(file);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file1));
@@ -475,7 +475,7 @@ public class CharacterFrame extends JFrame implements WindowListener{
     @Override
     public void windowClosing(WindowEvent e) {
         try{
-            PrintWriter writer = new PrintWriter(new FileOutputStream("src/characters.csv"));
+            PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/characters.csv"));
             for (CharacterEditable ie : scenes) {
                 ie.saveToFile(writer);
             }
@@ -487,9 +487,7 @@ public class CharacterFrame extends JFrame implements WindowListener{
     }
 
     @Override
-    public void windowClosed(WindowEvent e) {
-        System.exit(-1);
-    }
+    public void windowClosed(WindowEvent e) {}
 
     @Override
     public void windowIconified(WindowEvent e) {

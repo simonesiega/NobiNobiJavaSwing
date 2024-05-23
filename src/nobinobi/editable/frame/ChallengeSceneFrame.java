@@ -104,7 +104,7 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
         btnSave.setFont(fb);
         btnSave.addActionListener(e -> {
             try {
-                PrintWriter writer = new PrintWriter(new FileOutputStream("src/challengescene.csv"));
+                PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/challengescene.csv"));
                 for (ChallengeSceneEditable ie : scenes) {
                     ie.saveToFile(writer);
                 }
@@ -367,6 +367,7 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
         for (JCheckBox a : endconditionsPanel) {
             a.setSelected(false);
         }
+        /*
         for (int i = 0; i < conditionsPanel.size(); i++) {
             if (((currentScene.getCondition().getCondition()) & ((int) Math.pow(2, i))) > 0) {
                 conditionsPanel.get(i).setSelected(true);
@@ -377,6 +378,7 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
                 endconditionsPanel.get(i).setSelected(true);
             }
         }
+        */
     }
 
     public void refreshList() {
@@ -384,7 +386,7 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
     }
 
     private void loadScenes() {
-        File file = new File("src/challengescene.csv");
+        File file = new File("src/saves/challengescene.csv");
         createFileIfNotExists(file);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -423,7 +425,7 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
     @Override
     public void windowClosing(WindowEvent e) {
         try {
-            PrintWriter writer = new PrintWriter(new FileOutputStream("src/challengescene.csv"));
+            PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/challengescene.csv"));
             for (ChallengeSceneEditable ie : scenes) {
                 ie.saveToFile(writer);
             }
@@ -434,9 +436,7 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
     }
 
     @Override
-    public void windowClosed(WindowEvent e) {
-        System.exit(-1);
-    }
+    public void windowClosed(WindowEvent e) {}
 
     @Override
     public void windowIconified(WindowEvent e) {

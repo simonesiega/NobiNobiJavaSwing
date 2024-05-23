@@ -99,7 +99,7 @@ public class EpilogueFrame extends JFrame implements WindowListener {
         btnSave.setFont(fb);
         btnSave.addActionListener(e -> {
             try{
-                PrintWriter writer = new PrintWriter(new FileOutputStream("src/epilogue.csv"));
+                PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/epilogue.csv"));
                 for (EpilogueEditable ie : scenes) {
                     ie.saveToFile(writer);
                 }
@@ -319,11 +319,14 @@ public class EpilogueFrame extends JFrame implements WindowListener {
         for (JCheckBox a : conditions) {
             a.setSelected(false);
         }
+
+        /*
         for(int i = 0; i < conditions.size(); i++){
             if(((currentScene.getCondition().getCondition()) & ((int) Math.pow(2,i)))>0){
                 conditions.get(i).setSelected(true);
             }
         }
+        */
     }
 
     public void refreshList(){
@@ -331,7 +334,7 @@ public class EpilogueFrame extends JFrame implements WindowListener {
     }
 
     private void loadScenes() {
-        File file = new File("src/epilogue.csv");
+        File file = new File("src/saves/epilogue.csv");
         createFileIfNotExists(file);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -387,7 +390,7 @@ public class EpilogueFrame extends JFrame implements WindowListener {
     @Override
     public void windowClosing(WindowEvent e) {
         try{
-            PrintWriter writer = new PrintWriter(new FileOutputStream("src/epilogue.csv"));
+            PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/epilogue.csv"));
             for (EpilogueEditable ie : scenes) {
                 ie.saveToFile(writer);
             }
@@ -399,9 +402,7 @@ public class EpilogueFrame extends JFrame implements WindowListener {
     }
 
     @Override
-    public void windowClosed(WindowEvent e) {
-        System.exit(-1);
-    }
+    public void windowClosed(WindowEvent e) {}
 
     @Override
     public void windowIconified(WindowEvent e) {

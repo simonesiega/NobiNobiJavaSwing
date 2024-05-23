@@ -1,7 +1,3 @@
-Sistemare il characterFrame: Finire il salvataggio
 Aggiungere a introductionFrame la selezione delle end conditions
-Creare cardFrame(Dovrebbe essere praticamente uguale a abilityFrame)
-Creare challengesceneFrame
-Creare epilogueFrame
-Aggiungere tutti i nuovi frame al menù
+Sistemare gameswing
 Controllare il codice e testare tutto

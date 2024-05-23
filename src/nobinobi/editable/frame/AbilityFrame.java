@@ -96,7 +96,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
         btnSave.setFont(fb);
         btnSave.addActionListener(e -> {
             try{
-                PrintWriter writer = new PrintWriter(new FileOutputStream("src/abilities.csv"));
+                PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/abilities.csv"));
                 for (AbilityEditable ie : scenes) {
                     ie.saveToFile(writer);
                 }
@@ -300,7 +300,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
     }
 
     private void loadScenes() {
-        File file = new File("src/abilities.csv");
+        File file = new File("src/saves/abilities.csv");
         createFileIfNotExists(file);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -356,7 +356,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
     @Override
     public void windowClosing(WindowEvent e) {
         try{
-            PrintWriter writer = new PrintWriter(new FileOutputStream("src/abilities.csv"));
+            PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/abilities.csv"));
             for (AbilityEditable ie : scenes) {
                 ie.saveToFile(writer);
             }
@@ -368,9 +368,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
     }
 
     @Override
-    public void windowClosed(WindowEvent e) {
-        System.exit(-1);
-    }
+    public void windowClosed(WindowEvent e) {}
 
     @Override
     public void windowIconified(WindowEvent e) {
