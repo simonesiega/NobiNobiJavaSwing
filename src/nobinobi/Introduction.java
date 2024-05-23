@@ -37,7 +37,7 @@ public class Introduction extends Scene {
         title=value[0];
         description=value[1];
         image=value[2];
-        Condition endCondition = new Condition(Integer.parseInt(value[3]));
+        // Condition endCondition = new Condition(Integer.parseInt(value[3]));
     }
 
     public Condition getEndCondition () {

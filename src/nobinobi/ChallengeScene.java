@@ -77,6 +77,17 @@ public class ChallengeScene extends Scene {
         return endCondition;
     }
 
+    public boolean checkBonus(Character pl, int index){
+        if (index > pl.getAbilityCount()) {
+            return false;
+        } else {
+            if (pl.getAbility(index).getConditions().test(this.condition)) {
+                return true;
+            }
+            else return checkBonus(pl, index+1);
+        }
+    }
+
     /**
      * Costruisce la stringa
      * @return stringa
