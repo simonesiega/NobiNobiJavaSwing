@@ -46,7 +46,8 @@ public class Card {
      * @param strength Forza
      * @param technique Tecnica
      */
-    public Card(Condition conditions, int strength, int technique) {
+    public Card(String name, Condition conditions, int strength, int technique) {
+        this.name = name;
         this.conditions = conditions;
         this.strength = strength;
         this.technique = technique;

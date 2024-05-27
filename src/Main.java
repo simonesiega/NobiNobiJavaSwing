@@ -1,6 +1,6 @@
-import backgroundObj.GameSwing;
-import backgroundObj.GameTestuale;
+import backgroundObj.swing.*;
 import backgroundObj.InitGame;
+import nobinobi.Character;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,12 +16,11 @@ public class Main {
             }
         }
 
+
+
         /*
         GameTestuale test = new GameTestuale();
         test.play();
         */
-
-        GameSwing swing = new GameSwing();
-        swing.setVisible(true);
     }
 }

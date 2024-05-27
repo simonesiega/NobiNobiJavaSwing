@@ -1,4 +1,4 @@
-package backgroundObj;
+package backgroundObj.swing;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,9 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
-public class GameSwing extends JFrame implements ActionListener {
+public class GameMenuFrame extends JFrame implements ActionListener {
     private final Random random = new Random();
     private int round = 0;
+    private ReaderFile RF;
 
     private JButton nextButton;
     private JButton rollDiceButton;
@@ -17,7 +18,10 @@ public class GameSwing extends JFrame implements ActionListener {
     private JTextArea textArea;
     private JLabel diceResultLabel;
 
-    public GameSwing() {
+    public GameMenuFrame () {
+        RF = new ReaderFile();
+
+
         setTitle("Swing Game");
         setSize(400, 300);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
