@@ -49,6 +49,8 @@ public class CharacterFrame extends JFrame implements WindowListener{
     private CharacterEditable currentScene = new CharacterEditable();
     private boolean isNew = true;
 
+    private final String pathSave = "src/saves/dates/characters.csv";
+
     public CharacterFrame() {
 
         super("Character Editor");
@@ -120,7 +122,7 @@ public class CharacterFrame extends JFrame implements WindowListener{
         btnSave.addActionListener(e -> {
             System.out.println(scenes.firstElement());
             try{
-                PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/characters.csv"));
+                PrintWriter writer = new PrintWriter(new FileOutputStream(pathSave));
                 for (CharacterEditable ie : scenes) {
                     ie.saveToFile(writer);
                 }
@@ -402,7 +404,7 @@ public class CharacterFrame extends JFrame implements WindowListener{
     }
 
     private void loadScenes() {
-        File file = new File("src/saves/characters.csv");
+        File file = new File(pathSave);
         createFileIfNotExists(file);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -423,7 +425,7 @@ public class CharacterFrame extends JFrame implements WindowListener{
             System.out.println(ioe.getMessage());
         }
 
-        File file1 = new File("src/saves/abilities.csv");
+        File file1 = new File("src/saves/dates/abilities.csv");
         createFileIfNotExists(file);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file1));
@@ -475,7 +477,7 @@ public class CharacterFrame extends JFrame implements WindowListener{
     @Override
     public void windowClosing(WindowEvent e) {
         try{
-            PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/characters.csv"));
+            PrintWriter writer = new PrintWriter(new FileOutputStream(pathSave));
             for (CharacterEditable ie : scenes) {
                 ie.saveToFile(writer);
             }

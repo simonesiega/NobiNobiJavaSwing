@@ -32,6 +32,8 @@ public class AbilityFrame extends JFrame implements WindowListener{
     private AbilityEditable currentScene = new AbilityEditable();
     private boolean isNew = true;
 
+    private final String pathSave = "src/saves/dates/abilities.csv";
+
     public AbilityFrame() {
         super("Ability Editor");
         setSize(800, 600);
@@ -96,7 +98,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
         btnSave.setFont(fb);
         btnSave.addActionListener(e -> {
             try{
-                PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/abilities.csv"));
+                PrintWriter writer = new PrintWriter(new FileOutputStream(pathSave));
                 for (AbilityEditable ie : scenes) {
                     ie.saveToFile(writer);
                 }
@@ -300,7 +302,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
     }
 
     private void loadScenes() {
-        File file = new File("src/saves/abilities.csv");
+        File file = new File(pathSave);
         createFileIfNotExists(file);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -356,7 +358,7 @@ public class AbilityFrame extends JFrame implements WindowListener{
     @Override
     public void windowClosing(WindowEvent e) {
         try{
-            PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/abilities.csv"));
+            PrintWriter writer = new PrintWriter(new FileOutputStream(pathSave));
             for (AbilityEditable ie : scenes) {
                 ie.saveToFile(writer);
             }

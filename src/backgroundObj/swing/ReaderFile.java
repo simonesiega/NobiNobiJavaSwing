@@ -19,11 +19,11 @@ public class ReaderFile {
     private BufferedReader rdr;
 
     public ReaderFile(){
-        readCharacter("src/saves/characters.csv");
-        readIntroduction("src/saves/introductions.csv");
-        readCS("src/saves/challengescene.csv");
-        readCard("src/saves/cards.csv");
-        readEpilogues("src/saves/epilogue.csv");
+        readCharacter("src/saves/dates/characters.csv");
+        readIntroduction("src/saves/dates/introductions.csv");
+        readCS("src/saves/dates/challengescene.csv");
+        readCard("src/saves/dates/cards.csv");
+        readEpilogues("src/saves/dates/epilogue.csv");
     }
 
     public ArrayList<Character> getCharacters () {

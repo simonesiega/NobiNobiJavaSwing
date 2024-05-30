@@ -35,6 +35,8 @@ public class EpilogueFrame extends JFrame implements WindowListener {
     private EpilogueEditable currentScene = new EpilogueEditable();
     private boolean isNew = true;
 
+    private final String pathSave = "src/saves/dates/epilogue.csv";
+
     public EpilogueFrame() {
         super("Epilogue Editor");
         setSize(800, 600);
@@ -99,7 +101,7 @@ public class EpilogueFrame extends JFrame implements WindowListener {
         btnSave.setFont(fb);
         btnSave.addActionListener(e -> {
             try{
-                PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/epilogue.csv"));
+                PrintWriter writer = new PrintWriter(new FileOutputStream(pathSave));
                 for (EpilogueEditable ie : scenes) {
                     ie.saveToFile(writer);
                 }
@@ -334,7 +336,7 @@ public class EpilogueFrame extends JFrame implements WindowListener {
     }
 
     private void loadScenes() {
-        File file = new File("src/saves/epilogue.csv");
+        File file = new File(pathSave);
         createFileIfNotExists(file);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -390,7 +392,7 @@ public class EpilogueFrame extends JFrame implements WindowListener {
     @Override
     public void windowClosing(WindowEvent e) {
         try{
-            PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/epilogue.csv"));
+            PrintWriter writer = new PrintWriter(new FileOutputStream(pathSave));
             for (EpilogueEditable ie : scenes) {
                 ie.saveToFile(writer);
             }

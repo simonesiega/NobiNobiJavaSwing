@@ -22,5 +22,7 @@ public class Main {
         GameTestuale test = new GameTestuale();
         test.play();
         */
+        GameSwing gs = new GameSwing();
+        gs.playRound();
     }
 }

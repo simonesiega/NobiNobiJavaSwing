@@ -85,8 +85,5 @@ public class GameSwing {
         return c;
     }
 
-    public static void main (String[] args) {
-        GameSwing gs = new GameSwing();
-        gs.playRound();
-    }
+
 }

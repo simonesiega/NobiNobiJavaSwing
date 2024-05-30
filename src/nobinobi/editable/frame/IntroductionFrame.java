@@ -31,6 +31,8 @@ public class IntroductionFrame extends JFrame implements WindowListener{
     private IntroductionEditable currentScene = new IntroductionEditable();
     private boolean isNew = true;
 
+    private final String pathSave = "src/saves/dates/introductions.csv";
+
     public IntroductionFrame() {
         super("Scene Editor");
         setSize(800, 600);
@@ -95,7 +97,7 @@ public class IntroductionFrame extends JFrame implements WindowListener{
         btnSave.setFont(fb);
         btnSave.addActionListener(e -> {
             try{
-                PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/introductions.csv"));
+                PrintWriter writer = new PrintWriter(new FileOutputStream(pathSave));
                 for (IntroductionEditable ie : scenes) {
                     ie.saveToFile(writer);
                 }
@@ -205,7 +207,7 @@ public class IntroductionFrame extends JFrame implements WindowListener{
     }
 
     private void loadScenes() {
-        File file = new File("src/saves/introductions.csv");
+        File file = new File(pathSave);
         createFileIfNotExists(file);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -261,7 +263,7 @@ public class IntroductionFrame extends JFrame implements WindowListener{
     @Override
     public void windowClosing(WindowEvent e) {
         try{
-            PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/introductions.csv"));
+            PrintWriter writer = new PrintWriter(new FileOutputStream(pathSave));
             for (IntroductionEditable ie : scenes) {
                 ie.saveToFile(writer);
             }

@@ -12,4 +12,8 @@ public class Dice {
         Random rand = new Random();
         return rand.nextInt(max) + 1;
     }
+    
+    public boolean equalsNumber(int max){
+        return (roll(max) == roll(max));
+    }
 }

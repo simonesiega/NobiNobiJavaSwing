@@ -2,6 +2,7 @@ package backgroundObj.swing;
 
 import nobinobi.ChallengeScene;
 import nobinobi.Character;
+import nobinobi.Epilogue;
 import nobinobi.Introduction;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GameMenuFrame extends JFrame implements ActionListener , WindowListener {
+public class GameMenuFrame extends JFrame implements ActionListener {
     private final Random random = new Random();
     private int round = 0;
     private ReaderFile RF = new ReaderFile(); ;
@@ -25,7 +26,7 @@ public class GameMenuFrame extends JFrame implements ActionListener , WindowList
     private JButton technicianButton;
     private JButton strengthButton;
     private JTextArea textArea;
-    private JLabel diceResultLabel;
+
 
     public GameMenuFrame(Character player) {
 
@@ -41,9 +42,6 @@ public class GameMenuFrame extends JFrame implements ActionListener , WindowList
         buttonPanel.add(nextButton);
         nextButton.addActionListener(this);
 
-        rollDiceButton = createButton("Roll Dice");
-        rollDiceButton.addActionListener(this);
-        buttonPanel.add(rollDiceButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
 
@@ -51,10 +49,6 @@ public class GameMenuFrame extends JFrame implements ActionListener , WindowList
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
         add(scrollPane, BorderLayout.CENTER);
-
-        diceResultLabel = new JLabel(" ");
-        diceResultLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        add(diceResultLabel, BorderLayout.NORTH);
 
         setVisible(true);
 
@@ -75,78 +69,35 @@ public class GameMenuFrame extends JFrame implements ActionListener , WindowList
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == rollDiceButton) {
-            handleRollDiceButton();
-        }
-        else if(e.getSource() == nextButton){
-            handleNextButton();
-        }
+        handleNextButton();
     }
 
     private void handleNextButton() {
-        // Implementa logica del pulsante Next
-        ChallengeScene cs = challengeScenes.get(random.nextInt(challengeScenes.size()));
-        RoundFrame roundFrame = new RoundFrame(Player , cs, 0);
-        roundFrame.setVisible(true);
-        roundFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        round ++;
-        if(round == 10){
-            nextButton.removeActionListener(this);
+
+        if(round == 3){
+            Epilogue ep = RF.getEpilogues().get(random.nextInt(RF.getEpilogues().size()));
+            textArea.append("EPILOGO" + "\n");
+            textArea.append(ep.getTitle() + "\n");
+            textArea.append(ep.getDescription()+ "\n");
+            //HO FATTO SI CHE EPILOGUE EREDITASSE DA CHALLENGESCENE
+            RoundFrame rf = new RoundFrame(Player , ep , round);
+            rf.setVisible(true);
+        }else{
+            ChallengeScene cs = challengeScenes.get(random.nextInt(challengeScenes.size()));
+            textArea.append("Round "+ round + ": " + cs.getName() + "\n");
+            RoundFrame roundFrame = new RoundFrame(Player , cs , round );
+            roundFrame.setVisible(true);
+            roundFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+            round ++;
         }
 
     }
-
-    private void handleRollDiceButton() {
-        int diceResult = rollDice();
-        displayText("Dice Result: " + diceResult);
-    }
-
-    private int rollDice() {
-        return random.nextInt(6) + 1;
-    }
-
     private void play(){
-
         Introduction intro = Introductions.get(random.nextInt(Introductions.size()));
         textArea.append(intro.getTitle() + "\n");
-        textArea.append(intro.getDescription());
-
-
-
+        textArea.append(intro.getDescription()+ "\n");
     }
 
-    @Override
-    public void windowOpened(WindowEvent e) {
 
-    }
-
-    @Override
-    public void windowClosing(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-
-    }
 }

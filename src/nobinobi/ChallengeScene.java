@@ -100,7 +100,7 @@ public class ChallengeScene extends Scene {
     }
 
     public int bonusTechnic(Character pl, int index){
-        if (index > pl.getAbilityCount()) {
+        if (index >= pl.getAbilityCount()) {
             return 0;
         } else {
             if (pl.getAbility(index).getConditions().test(this.condition)){

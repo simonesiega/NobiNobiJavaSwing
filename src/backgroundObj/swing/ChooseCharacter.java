@@ -15,14 +15,14 @@ public class ChooseCharacter extends JFrame implements WindowListener {
 
     private JTextField nameField;
     private JLabel imageLabel;
-    private JTextArea abilityArea; // Cambiato a JTextArea per le abilità
+    private JTextArea abilityArea;
     private JTextArea descriptionArea;
     private JTextField techniqueField;
     private JTextField strengthField;
     private ArrayList<Character> characters;
     private JList<Character> characterList;
     private DefaultListModel<Character> characterListModel;
-    private Character player; // Variabile player pubblica
+    private Character player;
 
     public ChooseCharacter() {
         setTitle("Choose Character");
@@ -35,7 +35,6 @@ public class ChooseCharacter extends JFrame implements WindowListener {
         initializeComponents(characters);
         layoutComponents();
 
-        // Seleziona il primo personaggio di default se la lista non è vuota
         if (!characters.isEmpty()) {
             characterList.setSelectedIndex(0);
         }
@@ -60,29 +59,42 @@ public class ChooseCharacter extends JFrame implements WindowListener {
 
         // Campo di testo per il nome
         nameField = new JTextField(20);
+        nameField.setEditable(false);
+        nameField.setBackground(Color.WHITE);
+        nameField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        // Area per l'immagine
+        // Etichetta per l'immagine
         imageLabel = new JLabel();
-        imageLabel.setPreferredSize(new Dimension(300, 300));
+        imageLabel.setPreferredSize(new Dimension(200, 200));
         imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         // Area di testo per le abilità
-        abilityArea = new JTextArea(6, 20); // Cambiato a JTextArea
+        abilityArea = new JTextArea(6, 20);
         abilityArea.setLineWrap(true);
         abilityArea.setWrapStyleWord(true);
         abilityArea.setEditable(false);
+        abilityArea.setBackground(Color.WHITE);
         abilityArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         // Area di testo per la descrizione
-        descriptionArea = new JTextArea(5, 20);
+        descriptionArea = new JTextArea(10, 20); // Imposta l'altezza in modo che corrisponda all'altezza dell'immagine
         descriptionArea.setLineWrap(true);
         descriptionArea.setWrapStyleWord(true);
         descriptionArea.setEditable(false);
+        descriptionArea.setBackground(Color.WHITE);
         descriptionArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        descriptionArea.setPreferredSize(new Dimension(200, 200)); // Stessa altezza dell'immagine
 
         // Campi di testo per tecnica e forza
         techniqueField = new JTextField(10);
+        techniqueField.setEditable(false);
+        techniqueField.setBackground(Color.WHITE);
+        techniqueField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
         strengthField = new JTextField(10);
+        strengthField.setEditable(false);
+        strengthField.setBackground(Color.WHITE);
+        strengthField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
 
     private void layoutComponents() {
@@ -100,45 +112,49 @@ public class ChooseCharacter extends JFrame implements WindowListener {
         // Aggiungi campo di testo per il nome
         rightGbc.gridx = 0;
         rightGbc.gridy = 0;
+        rightGbc.gridwidth = 2;
         rightGbc.fill = GridBagConstraints.HORIZONTAL;
         nameField.setHorizontalAlignment(JTextField.CENTER);
         rightPanel.add(nameField, rightGbc);
 
-        // Aggiungi area per l'immagine
+        // Aggiungi area di testo per la descrizione e l'immagine
         rightGbc.gridy = 1;
+        rightGbc.gridwidth = 1;
+        rightGbc.fill = GridBagConstraints.BOTH;
+        rightGbc.weightx = 0.5;
+        rightGbc.weighty = 0.5;
+        rightPanel.add(new JScrollPane(descriptionArea), rightGbc);
+
+        rightGbc.gridx = 1;
         rightGbc.fill = GridBagConstraints.NONE;
+        rightGbc.weightx = 0;
+        rightGbc.weighty = 0;
         rightPanel.add(imageLabel, rightGbc);
 
-        // Aggiungi area di testo per la descrizione
-        rightGbc.gridy = 2;
-        rightGbc.fill = GridBagConstraints.BOTH;
-        rightGbc.weighty = 0.5;
-        JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
-        rightPanel.add(descriptionScrollPane, rightGbc);
-
         // Aggiungi campi per tecnica e forza
-        rightGbc.gridy = 3;
+        rightGbc.gridx = 0;
+        rightGbc.gridy = 2;
+        rightGbc.gridwidth = 2;
         rightGbc.fill = GridBagConstraints.HORIZONTAL;
-        JPanel statsPanel = new JPanel(new GridLayout(1, 2, 5, 5));
+        JPanel statsPanel = new JPanel(new GridLayout(1, 4, 5, 5));
         statsPanel.add(new JLabel("Strength:"));
         statsPanel.add(strengthField);
         statsPanel.add(new JLabel("Technique:"));
         statsPanel.add(techniqueField);
-
         rightPanel.add(statsPanel, rightGbc);
 
         // Aggiungi textarea per le abilità
-        rightGbc.gridy = 4;
+        rightGbc.gridy = 3;
         rightGbc.fill = GridBagConstraints.BOTH;
-        JScrollPane abilityScrollPane = new JScrollPane(abilityArea);
-        rightPanel.add(abilityScrollPane, rightGbc);
+        rightGbc.weighty = 0.5;
+        rightPanel.add(new JScrollPane(abilityArea), rightGbc);
 
         // Aggiungi pulsante "Scegli"
-        rightGbc.gridy = 5;
+        rightGbc.gridy = 4;
         rightGbc.fill = GridBagConstraints.NONE;
         JButton chooseButton = new JButton("Scegli");
         chooseButton.addActionListener(e -> {
-            player = characterList.getSelectedValue(); // Imposta il personaggio selezionato
+            player = characterList.getSelectedValue();
             JOptionPane.showMessageDialog(this, "Hai scelto " + player.getName());
 
             backgroundObj.swing.GameMenuFrame gmf = new backgroundObj.swing.GameMenuFrame(this.player);
@@ -147,10 +163,11 @@ public class ChooseCharacter extends JFrame implements WindowListener {
         });
         rightPanel.add(chooseButton, rightGbc);
 
-        // Aggiungi pannello destro al frame
+        // Aggiungi il pannello destro al frame principale
         addComponent(rightPanel, gbc, 1, 0, 1, 3, GridBagConstraints.BOTH, 0.5, 1.0);
     }
 
+    // Metodo per aggiungere componenti al layout con GridBagConstraints
     private void addComponent(Component component, GridBagConstraints gbc, int gridx, int gridy,
                               int gridwidth, int gridheight, int fill, double weightx, double weighty) {
         gbc.gridx = gridx;
@@ -163,20 +180,21 @@ public class ChooseCharacter extends JFrame implements WindowListener {
         add(component, gbc);
     }
 
+    // Aggiorna i dettagli del personaggio selezionato
     private void updateCharacterDetails(Character c) {
         setNameField(c.getName());
         setImageFromPath(c.getImage());
         setDescriptionArea(c.getDescription());
         setTechniqueField(Integer.toString(c.getTechnique()));
         setStrengthField(Integer.toString(c.getStrength()));
-        String text = "";
+        StringBuilder text = new StringBuilder();
         for (int i = 0; i < c.getAbilityCount(); i++) {
-            text += c.getAbility(i) + "\n";
+            text.append(c.getAbility(i)).append("\n");
         }
-        setAbilityArea(text);
+        setAbilityArea(text.toString());
     }
 
-    // Metodi per impostare i valori
+    // Metodi setter per aggiornare i campi di testo e le aree di testo
     public void setNameField(String name) {
         nameField.setText(name);
     }
@@ -186,22 +204,20 @@ public class ChooseCharacter extends JFrame implements WindowListener {
             File imageFile = new File(imagePath);
             if (!imageFile.exists()) {
                 imageFile = new File("src/img/cimg/player1.jpg");
-                if(player != null){
+                if (player != null) {
                     player.setImage("src/img/cimg/player1.jpg");
                 }
-
             }
-            ImageIcon icon = new ImageIcon(ImageIO.read(imageFile));
-
-            imageLabel.setIcon(icon);
-
+            ImageIcon originalIcon = new ImageIcon(ImageIO.read(imageFile));
+            Image originalImage = originalIcon.getImage();
+            Image scaledImage = originalImage.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+            imageLabel.setIcon(scaledIcon);
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Errore nel caricamento dell'immagine: " + e.getMessage());
         }
     }
-
-
 
     private void setAbilityArea(String text) {
         abilityArea.setText(text);
@@ -218,14 +234,13 @@ public class ChooseCharacter extends JFrame implements WindowListener {
     public void setStrengthField(String strength) {
         strengthField.setText(strength);
     }
-    public Character getPlayer(){
+
+    public Character getPlayer() {
         return player;
     }
 
     @Override
-    public void windowOpened(WindowEvent e) {
-
-    }
+    public void windowOpened(WindowEvent e) { }
 
     @Override
     public void windowClosing(WindowEvent e) {
@@ -238,20 +253,16 @@ public class ChooseCharacter extends JFrame implements WindowListener {
     }
 
     @Override
-    public void windowIconified(WindowEvent e) {
-    }
+    public void windowIconified(WindowEvent e) { }
 
     @Override
-    public void windowDeiconified(WindowEvent e) {
-    }
+    public void windowDeiconified(WindowEvent e) { }
 
     @Override
-    public void windowActivated(WindowEvent e) {
-    }
+    public void windowActivated(WindowEvent e) { }
 
     @Override
-    public void windowDeactivated(WindowEvent e) {
-    }
+    public void windowDeactivated(WindowEvent e) { }
 
     public static void main(String[] args) {
         ChooseCharacter c = new ChooseCharacter();

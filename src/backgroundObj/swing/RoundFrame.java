@@ -12,8 +12,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 // Input Output
 import java.io.File;
@@ -30,7 +28,7 @@ import javax.imageio.ImageIO;
  * Pannello sinistro area di testo controllata con dei bottoni
  * Pannello destro informazioni sul personaggio
  */
-public class RoundFrame extends JFrame implements ActionListener, WindowListener {
+public class RoundFrame extends JFrame implements ActionListener {
 
     // Dado
     private final Dice dice = new Dice();
@@ -202,6 +200,7 @@ public class RoundFrame extends JFrame implements ActionListener, WindowListener
 
         // Bottone prossimo round
         proceedToNextPartButton = createButton("Next Part");
+        proceedToNextPartButton.setEnabled(false);
         proceedToNextPartButton.addActionListener(e -> {
             proceedToNextPart();
             proceedToNextPartButton.setEnabled(false);
@@ -453,41 +452,6 @@ public class RoundFrame extends JFrame implements ActionListener, WindowListener
     // NON IMPLEMENTATO
     @Override
     public void actionPerformed(ActionEvent e) {
-
-    }
-
-    @Override
-    public void windowOpened(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowClosing(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
 
     }
 }

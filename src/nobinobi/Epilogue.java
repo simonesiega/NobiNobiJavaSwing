@@ -1,14 +1,14 @@
 package nobinobi;
 import java.io.PrintWriter;
 
-public class Epilogue extends Scene {
-    protected String name;
+public class Epilogue extends ChallengeScene {
+    /*protected String name;
     protected Condition condition;
     protected String description;
     protected int strength;
     protected int technique;
     protected String winDescription;
-    protected String lostDescription;
+    protected String lostDescription;*/
 
     public Epilogue(){
         this.name = "";
@@ -85,7 +85,7 @@ public class Epilogue extends Scene {
      * @return stringa
      */
     public String toString(){
-        return "EPILOGUE " + description;
+        return name;
     }
 
     @Override

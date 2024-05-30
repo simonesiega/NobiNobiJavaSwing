@@ -39,6 +39,8 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
     private JPanel cardPanel; // Pannello che contiene i pannelli delle checkbox
     private CardLayout cardLayout; // Layout per il cambio di pannelli
 
+    private final String pathSave = "src/saves/dates/challengescene.csv";
+
     public ChallengeSceneFrame() {
         super("ChallengeScene Editor");
         setSize(800, 600);
@@ -104,7 +106,7 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
         btnSave.setFont(fb);
         btnSave.addActionListener(e -> {
             try {
-                PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/challengescene.csv"));
+                PrintWriter writer = new PrintWriter(new FileOutputStream(pathSave));
                 for (ChallengeSceneEditable ie : scenes) {
                     ie.saveToFile(writer);
                 }
@@ -386,7 +388,7 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
     }
 
     private void loadScenes() {
-        File file = new File("src/saves/challengescene.csv");
+        File file = new File(pathSave);
         createFileIfNotExists(file);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -425,7 +427,7 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
     @Override
     public void windowClosing(WindowEvent e) {
         try {
-            PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/challengescene.csv"));
+            PrintWriter writer = new PrintWriter(new FileOutputStream(pathSave));
             for (ChallengeSceneEditable ie : scenes) {
                 ie.saveToFile(writer);
             }

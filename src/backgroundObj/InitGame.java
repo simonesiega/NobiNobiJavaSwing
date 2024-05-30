@@ -19,12 +19,12 @@ public class InitGame {
 
         // Aggiungi i frame con i relativi parametri
         // Da Modificare in base ai valori minimi
-        frames.add(new FrameData(new IntroductionFrame(), "src/saves/introductions.csv", 0));
-        frames.add(new FrameData(new AbilityFrame(), "src/saves/abilities.csv", 6));
-        frames.add(new FrameData(new CharacterFrame(), "src/saves/characters.csv", 0));
-        frames.add(new FrameData(new ChallengeSceneFrame(), "src/saves/challengescene.csv", 0));
-        frames.add(new FrameData(new CardFrame(), "src/saves/cards.csv", 0));
-        frames.add(new FrameData(new EpilogueFrame(), "src/saves/epilogue.csv", 0));
+        frames.add(new FrameData(new IntroductionFrame(), "src/saves/dates/introductions.csv", 0));
+        frames.add(new FrameData(new AbilityFrame(), "src/saves/dates/abilities.csv", 6));
+        frames.add(new FrameData(new CharacterFrame(), "src/saves/dates/characters.csv", 0));
+        frames.add(new FrameData(new ChallengeSceneFrame(), "src/saves/dates/challengescene.csv", 0));
+        frames.add(new FrameData(new CardFrame(), "src/saves/dates/cards.csv", 0));
+        frames.add(new FrameData(new EpilogueFrame(), "src/saves/dates/epilogue.csv", 0));
 
         currentIndex = 0;
         finish = false;

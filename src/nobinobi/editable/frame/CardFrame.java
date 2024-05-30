@@ -32,6 +32,8 @@ public class CardFrame extends JFrame implements WindowListener{
     private CardEditable currentScene = new CardEditable();
     private boolean isNew = true;
 
+    private final String pathSave = "src/saves/dates/cards.csv";
+
     public CardFrame() {
         super("Card Editor");
         setSize(800, 600);
@@ -96,7 +98,7 @@ public class CardFrame extends JFrame implements WindowListener{
         btnSave.setFont(fb);
         btnSave.addActionListener(e -> {
             try{
-                PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/cards.csv"));
+                PrintWriter writer = new PrintWriter(new FileOutputStream(pathSave));
                 for (CardEditable ie : scenes) {
                     ie.saveToFile(writer);
                 }
@@ -300,7 +302,7 @@ public class CardFrame extends JFrame implements WindowListener{
     }
 
     private void loadScenes() {
-        File file = new File("src/saves/cards.csv");
+        File file = new File(pathSave);
         createFileIfNotExists(file);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -356,7 +358,7 @@ public class CardFrame extends JFrame implements WindowListener{
     @Override
     public void windowClosing(WindowEvent e) {
         try{
-            PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/cards.csv"));
+            PrintWriter writer = new PrintWriter(new FileOutputStream(pathSave));
             for (CardEditable ie : scenes) {
                 ie.saveToFile(writer);
             }
