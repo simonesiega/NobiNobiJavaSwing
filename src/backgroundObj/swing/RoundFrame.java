@@ -22,26 +22,29 @@ public class RoundFrame extends JFrame implements ActionListener {
     private JButton rollDiceButton;
     private JButton technicChallengeButton;
     private JButton strengthChallengeButton;
+    private JButton proceedToCheckBonusButton;
+    private JButton proceedToNextPartButton;
 
     private JTextField nameField;
     private JLabel imageLabel;
     private JLabel[] abilityFields;
     private JTextArea textAreaRight;
 
-    /*
-    0 ancora non scelta
-    1 tecnica
-    2 forza
-     */
     private int sceltaChallenge;
-    private int pointChallenge;
+
+    private int limit;
+    private int dadi = 0;
+
+    private boolean timeToChoose = false;
+    private boolean timeToRoll = true;
+    private boolean isTechnique = false;
 
     private final Character character;
     private final ChallengeScene prova;
 
     public RoundFrame(Character c, ChallengeScene p) {
         setTitle("Round Frame");
-        setSize(800, 600);
+        setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridBagLayout());
 
@@ -59,55 +62,90 @@ public class RoundFrame extends JFrame implements ActionListener {
     }
 
     private void initializeComponents() {
-        // Area di testo a sinistra
         textAreaLeft = createTextArea();
 
-        // Bottone Roll Dice
-        rollDiceButton = new JButton("Roll Dice");
-        rollDiceButton.addActionListener( e -> {
-            int sum = 0;
-
+        rollDiceButton = createButton("Roll Dice");
+        rollDiceButton.addActionListener(e -> {
             for (int i = 0; i < 2; i++) {
-                sum += dice.roll(6);
+                dadi += dice.roll(6);
             }
-            textAreaLeft.append(Integer.toString(sum) + '\n');
+            textAreaLeft.append("\nLancio del dado: " + dadi + '\n');
+            int t = dadi;
+
+            if (isTechnique) t += character.getTechnique();
+            else t += character.getStrength();
+
+            textAreaLeft.append("Lancio del dado sommato al potere del character: " + t + '\n');
+
+            rollDiceButton.setEnabled(false);
+            proceedToCheckBonusButton.setEnabled(true);
         });
 
-        technicChallengeButton = new JButton("Tecnic Challenge");
+        technicChallengeButton = createButton("Technic Challenge");
+        technicChallengeButton.setEnabled(false);
         technicChallengeButton.addActionListener(e -> {
-            if (sceltaChallenge == 0){
-                textAreaLeft.append("Hai scelto la prova tecnica" + '\n');
-                pointChallenge = prova.getTechnique();
-                textAreaLeft.append("Devi battere il punteggio " + pointChallenge + " \n");
-                sceltaChallenge = 1;
-            }
+            textAreaLeft.append("Hai scelto la prova tecnica" + '\n');
+            isTechnique = true;
+            limit = prova.getTechnique();
+            textAreaLeft.append("Devi battere il punteggio " + limit + " \n");
+            sceltaChallenge = 1;
+            timeToChoose = false;
+            technicChallengeButton.setEnabled(false);
+            strengthChallengeButton.setEnabled(false);
+            rollDiceButton.setEnabled(true);
+            textAreaLeft.append("Lancia i Dadi per superare la prova " + "\n");
         });
 
-        strengthChallengeButton = new JButton("Strength Challenge");
+        strengthChallengeButton = createButton("Strength Challenge");
+        strengthChallengeButton.setEnabled(false);
         strengthChallengeButton.addActionListener(e -> {
-            if (sceltaChallenge == 0){
-                textAreaLeft.append("Hai scelto la prova forza" + '\n');
-                pointChallenge = prova.getStrength();
-                textAreaLeft.append("Devi battere il punteggio " + pointChallenge + " \n");
-                sceltaChallenge = 2;
-            }
+            isTechnique = false;
+            textAreaLeft.append("Hai scelto la prova forza" + '\n');
+            limit = prova.getStrength();
+            textAreaLeft.append("Devi battere il punteggio " + limit + " \n");
+            sceltaChallenge = 2;
+            technicChallengeButton.setEnabled(false);
+            strengthChallengeButton.setEnabled(false);
+            rollDiceButton.setEnabled(true);
+            textAreaLeft.append("Lancia i Dadi per superare la prova " + "\n");
         });
 
-        // Campo di testo per il nome
+        proceedToCheckBonusButton = createButton("Check Bonus");
+        proceedToCheckBonusButton.setEnabled(false);
+        proceedToCheckBonusButton.addActionListener(e -> {
+            textAreaLeft.append("\n");
+            if (prova.checkBonus(character, 0)) {
+                if (!isTechnique) {
+                    textAreaLeft.append("Hai fatto un tiro di " + dadi + " + bonus " + character.getStrength() + " con totale " + (dadi += character.getStrength()) + "\n");
+                } else {
+                    textAreaLeft.append("Hai fatto un tiro di " + dadi + " + bonus " + character.getTechnique() + " con totale " + (dadi += character.getTechnique()) + "\n");
+                }
+            } else {
+                textAreaLeft.append("Hai fatto un tiro di " + dadi + " senza bonus" + "\n");
+            }
+            proceedToNextPartButton.setEnabled(true);
+            proceedToCheckBonusButton.setEnabled(false);
+        });
+
+        proceedToNextPartButton = createButton("Next Part");
+        proceedToNextPartButton.setEnabled(false);
+        proceedToNextPartButton.addActionListener(e -> {
+            proceedToNextPart();
+            proceedToNextPartButton.setEnabled(false);
+        });
+
+
         nameField = new JTextField(20);
 
-        // Area per l'immagine
         imageLabel = new JLabel();
         imageLabel.setPreferredSize(new Dimension(300, 300));
         imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        // Aree di testo non modificabili per le abilità
         abilityFields = new JLabel[6];
         for (int i = 0; i < 6; i++) {
             abilityFields[i] = new JLabel(character.getAbility(i).toString());
         }
 
-        // Grande area di testo a destra
         textAreaRight = createTextArea();
     }
 
@@ -118,39 +156,40 @@ public class RoundFrame extends JFrame implements ActionListener {
         return textArea;
     }
 
+    private JButton createButton(String text) {
+        JButton button = new JButton(text);
+        button.setPreferredSize(new Dimension(button.getPreferredSize().width, 50)); // Imposta l'altezza minima del pulsante
+        return button;
+    }
+
     private void layoutComponents() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        // Aggiungi area di testo a sinistra
         addComponent(new JScrollPane(textAreaLeft), gbc, 0, 0, 2, 1, GridBagConstraints.BOTH, 0.5, 1.0);
 
-        // Crea un pannello per i tre pulsanti
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 5, 5));
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 5, 5, 5));
         buttonPanel.add(rollDiceButton);
         buttonPanel.add(technicChallengeButton);
         buttonPanel.add(strengthChallengeButton);
+        buttonPanel.add(proceedToCheckBonusButton);
+        buttonPanel.add(proceedToNextPartButton);
 
-        // Aggiungi il pannello dei pulsanti sotto la text area di sinistra
         addComponent(buttonPanel, gbc, 0, 1, 2, 1, GridBagConstraints.HORIZONTAL, 0.0, 0.0);
 
-        // Pannello destro
         JPanel rightPanel = new JPanel(new GridBagLayout());
         GridBagConstraints rightGbc = new GridBagConstraints();
         rightGbc.insets = new Insets(5, 5, 5, 5);
 
-        // Aggiungi campo di testo per il nome
         rightGbc.gridx = 0;
         rightGbc.gridy = 0;
         rightGbc.fill = GridBagConstraints.HORIZONTAL;
         rightPanel.add(nameField, rightGbc);
 
-        // Aggiungi area per l'immagine
         rightGbc.gridy = 1;
         rightGbc.fill = GridBagConstraints.NONE;
         rightPanel.add(imageLabel, rightGbc);
 
-        // Aggiungi aree di testo non modificabili per le abilità
         rightGbc.gridy = 2;
         rightGbc.fill = GridBagConstraints.HORIZONTAL;
         JPanel abilitiesPanel = new JPanel(new GridLayout(6, 1, 5, 5));
@@ -159,14 +198,12 @@ public class RoundFrame extends JFrame implements ActionListener {
         }
         rightPanel.add(abilitiesPanel, rightGbc);
 
-        // Aggiungi grande area di testo sotto le abilità
         rightGbc.gridy = 3;
         rightGbc.weighty = 1.0;
         rightGbc.fill = GridBagConstraints.BOTH;
         JScrollPane scrollPaneRight = new JScrollPane(textAreaRight);
         rightPanel.add(scrollPaneRight, rightGbc);
 
-        // Aggiungi pannello destro al frame
         addComponent(rightPanel, gbc, 2, 0, 1, 3, GridBagConstraints.BOTH, 0.5, 1.0);
     }
 
@@ -182,19 +219,17 @@ public class RoundFrame extends JFrame implements ActionListener {
         add(component, gbc);
     }
 
-    // Metodi per impostare i valori
     public void setNameField(String name) {
         nameField.setText(name);
     }
 
     public void setImageFromPath(String imagePath) {
         try {
-            // Debug: Stampa il percorso dell'immagine
-            // System.out.println("Trying to load image from path: " + imagePath);
             File imageFile = new File(imagePath);
             if (!imageFile.exists()) {
                 System.out.println("Image file does not exist at: " + imagePath);
                 JOptionPane.showMessageDialog(this, "Immagine non trovata: " + imagePath);
+                imageFile = new File("src/img/cimg/player1.jpg");
                 return;
             }
             ImageIcon icon = new ImageIcon(ImageIO.read(imageFile));
@@ -211,7 +246,7 @@ public class RoundFrame extends JFrame implements ActionListener {
         }
     }
 
-    private void setCard(Character c){
+    private void setCard(Character c) {
         for (int i = 0; i < c.getCardCount(); i++) {
             textAreaRight.append(c.getCard(i).toString() + '\n');
         }
@@ -221,22 +256,60 @@ public class RoundFrame extends JFrame implements ActionListener {
         textAreaRight.setText(text);
     }
 
-    private void setStory(){
+    private void setStory() {
+        textAreaLeft.append("PLAYER: forza - " + character.getStrength() + " / tecnica - " + character.getTechnique() + "\n\n");
+        textAreaLeft.append("TITOLO: " + prova.getName());
+        textAreaLeft.append("\n\n");
+        textAreaLeft.append("DESCRIZIONE: " + prova.getDescription());
+        textAreaLeft.append("\n\n");
 
+        if (prova.getTechnique() == 0) {
+            limit = prova.getStrength();
+            textAreaLeft.append("Devi superare forza: " + limit + "\n\n");
+            textAreaLeft.append("Lancia i Dadi per superare la prova " + "\n");
+        } else if (prova.getStrength() == 0) {
+            isTechnique = true;
+            limit = prova.getTechnique();
+            textAreaLeft.append("Devi superare tecnica: " + limit + "\n\n");
+            textAreaLeft.append("Lancia i Dadi per superare la prova " + "\n");
+        } else {
+            rollDiceButton.setEnabled(false); // Assicura che il pulsante "Roll Dice" sia disabilitato finché non viene effettuata una scelta
+            textAreaLeft.append("Scegli se battere tecnica o forza\n");
+            textAreaLeft.append("Tecnica: " + prova.getTechnique() + "\n");
+            textAreaLeft.append("Forza: " + prova.getStrength() + "\n");
+            technicChallengeButton.setEnabled(true);
+            strengthChallengeButton.setEnabled(true);
+        }
+
+        textAreaLeft.append("\n");
     }
 
-    public static void main (String[] args) {
-        Character a = new Character("titolo#M#src/img/cimg/player1.jpg#descrizione#1#2#dada@dada@2097151@434@4324@@dadffaf@fafaf@1560063@432342@4323432@@dada@fafa4@13840@3324@42342@@dada@ffaga@2097151@4324@424@@da@dada@2097151@434@43@@dad@adad@2097151@343@432");
+    private void proceedToNextPart() {
+        if (dadi > limit) {
+            textAreaLeft.append("\nHai vinto la prova:\n" + prova.getWinDescription() + "\n");
+            character.addCard(new Card("Vittoria", new Condition(12), 1, 2));
+            textAreaLeft.append("Hai guadagnato la seguente carta: " + character.getCard(character.getCardCount() - 1) + '\n');
+            textAreaLeft.append(character.getCard(character.getCardCount() - 1).getDescription());
+        } else {
+            textAreaLeft.append("\nHai perso la prova: " + prova.getLostDescription() + "\n");
+            character.addCard(new Card("Sconfitta", new Condition(12), 1, 2));
+            textAreaLeft.append("Hai guadagnato la seguente carta: " + character.getCard(character.getCardCount() - 1) + "\n");
+            textAreaLeft.append(character.getCard(character.getCardCount() - 1).getDescription());
+        }
+    }
+
+    public static void main(String[] args) {
+        Character a = new Character("titolo#M#src/img/cimg/player1.png#descrizione#1#2#dada@dada@2097151@434@4324@@dadffaf@fafaf@1560063@432342@4323432@@dada@fafa4@13840@3324@42342@@dada@ffaga@2097151@4324@424@@da@dada@2097151@434@43@@dad@adad@2097151@343@432");
         a.addCard(new Card("prova", new Condition(12), 1, 2));
         a.addCard(new Card("dad", new Condition(12), 1, 2));
         a.addCard(new Card("5454", new Condition(12), 1, 2));
-        ChallengeScene b = new ChallengeScene("dad#adad#34344#432#dada#dada#2097151#2097151");
+        ChallengeScene b = new ChallengeScene("dad#adad#1#1#dada#dada#2097151#2097151");
         RoundFrame r = new RoundFrame(a, b);
         r.setVisible(true);
     }
 
     @Override
-    public void actionPerformed (ActionEvent e) {
-
+    public void actionPerformed(ActionEvent e) {
+        // Non usato
     }
 }

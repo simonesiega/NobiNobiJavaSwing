@@ -9,7 +9,8 @@ public class GameSwing {
     }
 
     public void playRound(){
-        GameMenuFrame gm = new GameMenuFrame();
+        ChooseCharacter ch = new ChooseCharacter();
+        ch.setVisible(true);
     }
 
     public String resultGame(){
@@ -82,5 +83,10 @@ public class GameSwing {
         }
 
         return c;
+    }
+
+    public static void main (String[] args) {
+        GameSwing gs = new GameSwing();
+        gs.playRound();
     }
 }

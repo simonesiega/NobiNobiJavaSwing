@@ -75,7 +75,9 @@ public class Character {
         abilities = new Ability[6];
         cards = new ArrayList<>(0);
     }
-
+    public void setImage(String image){
+        this.image = image;
+    }
     /*
      * Getter
      * i setter sono in editable
