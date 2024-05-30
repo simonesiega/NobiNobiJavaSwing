@@ -100,7 +100,7 @@ public class Card {
      * @return stringa da stampare
      */
     public String toFileString(){
-        String s = name + "#" + description + "#" + conditions.getCondition() + "#" + strength + "#" + technique;
+        String s = name + "#" + description + "#" + conditions.getCondition() + "#" + strength + "#" + technique + "\n";
         return s;
     }
 

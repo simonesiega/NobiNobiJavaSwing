@@ -86,7 +86,7 @@ public class GameMenuFrame extends JFrame implements ActionListener , WindowList
     private void handleNextButton() {
         // Implementa logica del pulsante Next
         ChallengeScene cs = challengeScenes.get(random.nextInt(challengeScenes.size()));
-        RoundFrame roundFrame = new RoundFrame(Player , cs);
+        RoundFrame roundFrame = new RoundFrame(Player , cs, 0);
         roundFrame.setVisible(true);
         roundFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         round ++;

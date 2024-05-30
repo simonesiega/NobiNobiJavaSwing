@@ -88,6 +88,28 @@ public class ChallengeScene extends Scene {
         }
     }
 
+    public int bonusStrength(Character pl, int index){
+        if (index >= pl.getAbilityCount()) {
+            return 0;
+        } else {
+            if (pl.getAbility(index).getConditions().test(this.condition)){
+                return pl.getAbility(index).getStrength() + bonusStrength(pl, index + 1);
+            }
+            else return bonusStrength(pl, index + 1);
+        }
+    }
+
+    public int bonusTechnic(Character pl, int index){
+        if (index > pl.getAbilityCount()) {
+            return 0;
+        } else {
+            if (pl.getAbility(index).getConditions().test(this.condition)){
+                return pl.getAbility(index).getTechnique() + bonusTechnic(pl, index + 1);
+            }
+            else return bonusTechnic(pl, index + 1);
+        }
+    }
+
     /**
      * Costruisce la stringa
      * @return stringa

@@ -5,21 +5,16 @@ import nobinobi.Card;
 import nobinobi.ChallengeScene;
 import nobinobi.Character;
 import nobinobi.Condition;
-import nobinobi.editable.AbilityEditable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
 import javax.imageio.ImageIO;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 
-public class RoundFrame extends JFrame implements ActionListener, WindowListener {
+public class RoundFrame extends JFrame implements ActionListener {
 
     private final Dice dice = new Dice();
     private JTextArea textAreaLeft;
@@ -40,8 +35,8 @@ public class RoundFrame extends JFrame implements ActionListener, WindowListener
     private int limit;
     private int dadi = 0;
     private int t = 0;
-    private int nRound;
 
+    private boolean timeToChoose = false;
     private boolean isTechnique = false;
 
     private final Character character;
@@ -49,11 +44,7 @@ public class RoundFrame extends JFrame implements ActionListener, WindowListener
 
     private ReaderFile rf = new ReaderFile();
 
-    private JTextField strengthField;
-    private JTextField techniqueField;
-
-    public RoundFrame(Character c, ChallengeScene p, int nRound) {
-        nRound = nRound;
+    public RoundFrame(Character c, ChallengeScene p) {
         setTitle("Round Frame");
         setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -100,6 +91,7 @@ public class RoundFrame extends JFrame implements ActionListener, WindowListener
             limit = prova.getTechnique();
             textAreaLeft.append("Devi battere il punteggio " + limit + " \n");
             sceltaChallenge = 1;
+            timeToChoose = false;
             technicChallengeButton.setEnabled(false);
             strengthChallengeButton.setEnabled(false);
             rollDiceButton.setEnabled(true);
@@ -144,16 +136,8 @@ public class RoundFrame extends JFrame implements ActionListener, WindowListener
         proceedToNextPartButton.addActionListener(e -> {
             proceedToNextPart();
             proceedToNextPartButton.setEnabled(false);
-
-            try{
-                PrintWriter writer = new PrintWriter(new FileOutputStream("src/saves/gameplay/round/round" + nRound + "csv"));
-                writer.write(textAreaLeft.getText());
-                writer.close();
-            }
-            catch(IOException ioe){
-                System.out.println(ioe.getMessage());
-            }
         });
+
 
         nameField = new JTextField(20);
 
@@ -165,14 +149,6 @@ public class RoundFrame extends JFrame implements ActionListener, WindowListener
         for (int i = 0; i < 6; i++) {
             abilityFields[i] = new JLabel(character.getAbility(i).toString());
         }
-
-        strengthField = new JTextField(20);
-        strengthField.setText(String.valueOf(character.getStrength()));
-        strengthField.setEditable(false);
-
-        techniqueField = new JTextField(20);
-        techniqueField.setText(String.valueOf(character.getTechnique()));
-        techniqueField.setEditable(false);
 
         textAreaRight = createTextArea();
     }
@@ -218,29 +194,15 @@ public class RoundFrame extends JFrame implements ActionListener, WindowListener
         rightGbc.fill = GridBagConstraints.NONE;
         rightPanel.add(imageLabel, rightGbc);
 
-        // Aggiunta di un pannello per forza e tecnica affiancate
-        JPanel statsPanel = new JPanel(new GridLayout(1, 4, 5, 5));
-        statsPanel.add(new JLabel("Forza:"));
-        statsPanel.add(strengthField);
-        statsPanel.add(new JLabel("Tecnica:"));
-        statsPanel.add(techniqueField);
-
         rightGbc.gridy = 2;
         rightGbc.fill = GridBagConstraints.HORIZONTAL;
-        rightPanel.add(statsPanel, rightGbc);
-
-        // Aggiunta etichetta Abilità sopra le abilità
-        rightGbc.gridy = 3;
-        rightPanel.add(new JLabel("Abilità:"), rightGbc);
-
-        rightGbc.gridy = 4;
         JPanel abilitiesPanel = new JPanel(new GridLayout(6, 1, 5, 5));
         for (int i = 0; i < 6; i++) {
             abilitiesPanel.add(new JScrollPane(abilityFields[i]));
         }
         rightPanel.add(abilitiesPanel, rightGbc);
 
-        rightGbc.gridy = 5;
+        rightGbc.gridy = 3;
         rightGbc.weighty = 1.0;
         rightGbc.fill = GridBagConstraints.BOTH;
         JScrollPane scrollPaneRight = new JScrollPane(textAreaRight);
@@ -299,6 +261,7 @@ public class RoundFrame extends JFrame implements ActionListener, WindowListener
     }
 
     private void setStory() {
+        textAreaLeft.append("PLAYER: forza - " + character.getStrength() + " / tecnica - " + character.getTechnique() + "\n\n");
         textAreaLeft.append("TITOLO: " + prova.getName());
         textAreaLeft.append("\n\n");
         textAreaLeft.append("DESCRIZIONE: " + prova.getDescription());
@@ -341,51 +304,16 @@ public class RoundFrame extends JFrame implements ActionListener, WindowListener
 
     public static void main(String[] args) {
         Character a = new Character("titolo#M#src/img/cimg/player1.png#descrizione#1#2#dada@dada@2097151@434@4324@@dadffaf@fafaf@1560063@432342@4323432@@dada@fafa4@13840@3324@42342@@dada@ffaga@2097151@4324@424@@da@dada@2097151@434@43@@dad@adad@2097151@343@432");
-        a.addCard(new Card("prova", new Condition(12), 0, 2));
+        a.addCard(new Card("prova", new Condition(12), 1, 2));
         a.addCard(new Card("dad", new Condition(12), 1, 2));
         a.addCard(new Card("5454", new Condition(12), 1, 2));
         ChallengeScene b = new ChallengeScene("dad#adad#1#1#dada#dada#2097151#2097151");
-        RoundFrame r = new RoundFrame(a, b, 1);
+        RoundFrame r = new RoundFrame(a, b);
         r.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
-    }
-
-    @Override
-    public void windowOpened(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowClosing(WindowEvent e) {
-        System.out.println("closing");
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-
+        // Non usato
     }
 }
