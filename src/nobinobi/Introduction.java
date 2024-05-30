@@ -46,7 +46,8 @@ public class Introduction extends Scene {
 
     @Override
     public void saveToFile(PrintWriter out){
-        out.println(this.getTitle()+"#"+this.getDescription()+"#"+this.getImage() +"#" + this.getEndCondition());
+        System.out.println(this.getTitle()+"#"+this.getDescription()+"#"+this.getImage());
+        out.println(this.getTitle()+"#"+this.getDescription()+"#"+this.getImage());
     }
 
     /**
