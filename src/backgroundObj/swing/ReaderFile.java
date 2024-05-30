@@ -6,6 +6,9 @@ import nobinobi.Character;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * Classe adibita alla lettura da file
+ */
 public class ReaderFile {
     private final ArrayList<Character> characters = new ArrayList<>();
     private final ArrayList<Introduction> introductions = new ArrayList<>();
@@ -53,7 +56,7 @@ public class ReaderFile {
 
     public void readCharacter(String FileName) {
         try {
-            rdr = new BufferedReader(new FileReader(new File(FileName)));
+            rdr = new BufferedReader(new FileReader(FileName));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -73,7 +76,7 @@ public class ReaderFile {
 
     public void readIntroduction(String FileName) {
         try {
-            rdr = new BufferedReader(new FileReader(new File(FileName)));
+            rdr = new BufferedReader(new FileReader(FileName));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -93,7 +96,7 @@ public class ReaderFile {
 
     public void readEpilogues(String FileName) {
         try {
-            rdr = new BufferedReader(new FileReader(new File(FileName)));
+            rdr = new BufferedReader(new FileReader(FileName));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -113,15 +116,13 @@ public class ReaderFile {
 
     public void readCS(String FileName) {
         try {
-            rdr = new BufferedReader(new FileReader(new File(FileName)));
+            rdr = new BufferedReader(new FileReader(FileName));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
         try {
             String tmp = rdr.readLine();
             while (tmp != null) {
-
-
                 challengeScenes.add(new ChallengeScene(tmp));
                 tmp = rdr.readLine();
             }
@@ -133,7 +134,7 @@ public class ReaderFile {
 
     public void readCard(String FileName) {
         try {
-            rdr = new BufferedReader(new FileReader(new File(FileName)));
+            rdr = new BufferedReader(new FileReader(FileName));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
