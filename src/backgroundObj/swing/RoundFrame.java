@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 // Input Output
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -83,8 +84,9 @@ public class RoundFrame extends JFrame implements ActionListener {
 
     /**
      * Costruttore
-     * @param c character
-     * @param p prova
+     *
+     * @param c      character
+     * @param p      prova
      * @param nRound numero round corrente
      */
     public RoundFrame(Character c, ChallengeScene p, int nRound) {
@@ -206,12 +208,11 @@ public class RoundFrame extends JFrame implements ActionListener {
             proceedToNextPart();
             // Salvataggio round
             // writeRound nel file round + nRound
-            try{
+            try {
                 PrintWriter writerRound = new PrintWriter(new FileOutputStream("src/saves/gameplay/round/round" + nRound + ".csv"));
                 writerRound.write(textAreaLeft.getText());
                 writerRound.close();
-            }
-            catch(IOException ioe){
+            } catch (IOException ioe) {
                 System.out.println(ioe.getMessage());
             }
         });
@@ -242,6 +243,7 @@ public class RoundFrame extends JFrame implements ActionListener {
     /**
      * Crea un pannello
      * NB il pannello non é modificabile
+     *
      * @return il pannello costruito
      * No dinamico
      */
@@ -255,6 +257,7 @@ public class RoundFrame extends JFrame implements ActionListener {
     /**
      * Crea un bottone a partire dal nome
      * Usato per i bottoni del pannello sinistro
+     *
      * @param text nome del bottone
      * @return il bottone costruito
      */
@@ -352,10 +355,12 @@ public class RoundFrame extends JFrame implements ActionListener {
     /**
      * Imposta immagine a partire dal path
      * Immagini localizzate in src/img
+     *
      * @param imagePath percorso img
-     * throws IOException
-     * Piccolo debug
+     *                  throws IOException
+     *                  Piccolo debug
      */
+
     public void setImageFromPath(String imagePath) {
         try {
             File imageFile = new File(imagePath);
@@ -364,13 +369,19 @@ public class RoundFrame extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Immagine non trovata: " + imagePath);
                 return;
             }
-            ImageIcon icon = new ImageIcon(ImageIO.read(imageFile));
+
+            // Legge l'immagine e la ridimensiona a 300 x 300 pixel
+            BufferedImage originalImage = ImageIO.read(imageFile);
+            Image resizedImage = originalImage.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+            ImageIcon icon = new ImageIcon(resizedImage);
+
             imageLabel.setIcon(icon);
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Errore nel caricamento dell'immagine: " + e.getMessage());
         }
     }
+
 
     /**
      * Imposta le carte del c
@@ -447,4 +458,5 @@ public class RoundFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
     }
+
 }
