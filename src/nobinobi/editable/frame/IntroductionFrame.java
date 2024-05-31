@@ -8,6 +8,9 @@ import javax.swing.*;
 import nobinobi.Condition;
 import nobinobi.editable.*;
 
+/**
+ * Classe che gestisce il frame
+ */
 public class IntroductionFrame extends JFrame implements WindowListener {
     private JTextField txtTitolo;
     private JTextArea txtDescrizione;
@@ -32,6 +35,9 @@ public class IntroductionFrame extends JFrame implements WindowListener {
 
     private final String pathSave = "src/saves/dates/introductions.csv";
 
+    /**
+     * Costruttore di IntroductionFrame
+     */
     public IntroductionFrame() {
         super("Scene Editor");
         setSize(800, 600);
@@ -52,6 +58,10 @@ public class IntroductionFrame extends JFrame implements WindowListener {
         loadScenes();
     }
 
+    /**
+     * crea il Pannello con tutte le Introduzioni
+     * @return il Pannello costruito
+     */
     private JPanel createListPanel(){
         JPanel pnl = new JPanel();
         GridBagLayout layout = new GridBagLayout();
@@ -113,6 +123,10 @@ public class IntroductionFrame extends JFrame implements WindowListener {
         return pnl;
     }
 
+    /**
+     * crea il Pannello con le etichette per l inserimento dei dati
+     * @return il Pannello
+     */
     private JPanel createDetailPanel() {
         JPanel pnl = new JPanel();
 
@@ -250,6 +264,9 @@ public class IntroductionFrame extends JFrame implements WindowListener {
         lstScene.setListData(scenes);
     }
 
+    /**
+     * Carica le Introduzioni giá salvate
+     */
     private void loadScenes() {
         File file = new File(pathSave);
         createFileIfNotExists(file);
@@ -269,11 +286,15 @@ public class IntroductionFrame extends JFrame implements WindowListener {
         }
     }
 
+    /**
+     * Crea il File passato come parametro
+     * @param file File da creare
+     */
     private static void createFileIfNotExists(File file) {
         try {
             if (!file.exists()) {
                 if (!file.createNewFile()) {
-                    System.out.println("Impossibile creare il file 'scenes.csv'.");
+                    System.out.println("Impossibile creare il file 'introduction.csv'.");
                     System.exit(-1);
                 }
             }
@@ -284,6 +305,11 @@ public class IntroductionFrame extends JFrame implements WindowListener {
         }
     }
 
+    /**
+     * Crea il Pannello di checkbox
+     * @param conditions condizioni
+     * @return il Pannello
+     */
     private JPanel createCheckboxPanelEndCondition(Vector<JCheckBox> conditions) {
         JPanel checkboxPanel = new JPanel(new GridLayout(0, 4)); // 4 checkbox per riga
         String[] tecnicaLabels = {"Tutte/una", "Mercato", "Porto", "Città",

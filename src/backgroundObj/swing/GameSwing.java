@@ -2,17 +2,26 @@ package backgroundObj.swing;
 
 import java.io.*;
 
+/**
+ * Classe che init il game Swing
+ */
 public class GameSwing {
 
-    public GameSwing(){
-        ChooseCharacter ch = new ChooseCharacter();
+    /**
+     * Crea il frame chooseCharacter
+     * @param Round numero round game
+     */
+    public GameSwing(int Round){
+        ChooseCharacter ch = new ChooseCharacter(Round);
         ch.setVisible(true);
     }
 
-    public String resultGame(){
-        return "";
-    }
-
+    /**
+     * Legge una determinata riga di un determinato file
+     * @param filename path del file
+     * @param line linea da leggere
+     * @return linea nome(numero)
+     */
     private String readLine(String filename, int line) {
         File file = new File(filename);
 
@@ -39,6 +48,11 @@ public class GameSwing {
         return l;
     }
 
+    /**
+     * Scrive in un file determinato il content
+     * @param filename path del file
+     * @param content contenuto da scrivere
+     */
     public void writeFile(String filename, String content){
         File file = new File(filename);
         if (!file.exists()){
@@ -52,7 +66,10 @@ public class GameSwing {
         }
     }
 
-
+    /**
+     * Crea un file
+     * @param file file da creare
+     */
     private static void createFileIfNotExists(File file) {
         try {
             if (!file.exists()) {
@@ -68,6 +85,11 @@ public class GameSwing {
         }
     }
 
+    /**
+     * Conta la lunghezza di un file
+     * @param filename path del file
+     * @return int len
+     */
     private int lenFile(String filename) {
         int c = 0;
         try{

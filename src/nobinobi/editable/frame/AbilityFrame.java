@@ -11,27 +11,44 @@ import java.awt.event.WindowListener;
 import java.io.*;
 import java.util.Vector;
 
+/**
+ * Frame che gestisce la creazione di abilità
+ */
 public class AbilityFrame extends JFrame implements WindowListener{
+    /**
+     * Fields e txtArea per la creazione
+     */
     private JTextField txtName;
     private JTextArea txtDescrizione;
     private JTextField txtForza;
     private JTextField txtTecnica;
     private final Vector<JCheckBox> conditions = new Vector<>();
+
+    /**
+     * Panel e Bottoni
+     */
     private JPanel pnlButtons;
     private JButton btnDelete;
     private JButton btnNew;
     private JButton btnSave;
     private JButton btnUpdate;
-
+    /**
+     * Lista delle Ability
+     */
     private JList<AbilityEditable> lstScene;
 
+    //Font
     private final Font f = new Font("Arial", Font.PLAIN, 18);
     private final Font fb = new Font("Arial", Font.BOLD, 18);
 
+    /**
+     * Vettore Scene e variabili per il selezionamento
+     */
     private final Vector<AbilityEditable> scenes = new Vector<>();
     private AbilityEditable currentScene = new AbilityEditable();
     private boolean isNew = true;
 
+    //Path per la lettura e scrittura
     private final String pathSave = "src/saves/dates/abilities.csv";
 
     public AbilityFrame() {
@@ -54,6 +71,10 @@ public class AbilityFrame extends JFrame implements WindowListener{
         loadScenes();
     }
 
+    /**
+     * Metodo per la creazione dell pannello della lista di Ability
+     * @return
+     */
     private JPanel createListPanel(){
         JPanel pnl = new JPanel();
         GridBagLayout layout = new GridBagLayout();
@@ -116,7 +137,10 @@ public class AbilityFrame extends JFrame implements WindowListener{
         return pnl;
     }
 
-
+    /**
+     * Metodo per la creazione del pannello per la creazione delle ability
+     * @return
+     */
     private JPanel createDetailPanel(){
         JPanel pnl = new JPanel();
 
@@ -270,6 +294,10 @@ public class AbilityFrame extends JFrame implements WindowListener{
         return pnl;
     }
 
+    /**
+     * metodo per la creazione dell'integerfield
+     * @return
+     */
     private JTextField createIntegerField() {
         JTextField textField = new JTextField();
         ((PlainDocument) textField.getDocument()).setDocumentFilter(new IntegerFilter());
@@ -297,10 +325,16 @@ public class AbilityFrame extends JFrame implements WindowListener{
         }
     }
 
+    /**
+     * Metodo per il refresh della lista quando viene aggiunta un ability
+     */
     public void refreshList(){
         lstScene.setListData(scenes);
     }
 
+    /**
+     * Metodo per il caricamento delle ability nella lista
+     */
     private void loadScenes() {
         File file = new File(pathSave);
         createFileIfNotExists(file);
@@ -324,6 +358,10 @@ public class AbilityFrame extends JFrame implements WindowListener{
         }
     }
 
+    /**
+     * Metodo per la creazione del file se non esiste
+     * @param file
+     */
     private static void createFileIfNotExists(File file) {
         try {
             if (!file.exists()) {

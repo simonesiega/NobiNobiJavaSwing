@@ -5,7 +5,9 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-
+/**
+ * Menu di tutti i Frame
+ */
 public class MenuFrame extends JFrame implements WindowListener{
     private JPanel pnlButtons;
     private JButton abilityF;
@@ -15,8 +17,11 @@ public class MenuFrame extends JFrame implements WindowListener{
     private final Font f = new Font("Arial", Font.PLAIN, 18);
     private final Font fb = new Font("Arial", Font.BOLD, 18);
 
+    /**
+     * Costruttore della classe
+     */
     public MenuFrame() {
-        super("Menu Game");
+        super("Menu main.Game");
         setSize(1600, 600);
         addWindowListener(this);
 
@@ -30,6 +35,10 @@ public class MenuFrame extends JFrame implements WindowListener{
         add(createButtonsPanel(), c);
     }
 
+    /**
+     * Crea tutti i bottoni che poi collegano i diversi frame
+     * @return il Pannello costruito
+     */
     private JPanel createButtonsPanel() {
         JPanel pnl = new JPanel();
 
@@ -100,11 +109,6 @@ public class MenuFrame extends JFrame implements WindowListener{
         pnl.add(pnlButtons, c);
 
         return pnl;
-    }
-
-    public static void main (String[] args) {
-        MenuFrame mf = new MenuFrame();
-        mf.setVisible(true);
     }
 
     @Override

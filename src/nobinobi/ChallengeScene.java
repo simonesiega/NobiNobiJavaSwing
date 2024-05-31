@@ -2,6 +2,10 @@ package nobinobi;
 
 import java.io.PrintWriter;
 
+/**
+ * Classe che gestisce le cs
+ * Estende abs scene
+ */
 public class ChallengeScene extends Scene {
     protected String name;
     protected Condition condition;
@@ -12,6 +16,10 @@ public class ChallengeScene extends Scene {
     protected  String lostDescription;
     protected  Condition endCondition;
 
+    /**
+     * Costruttore vuoto
+     * init tutto a vuoto
+     */
     public ChallengeScene() {
         this.name = "";
         this.condition = null;
@@ -23,8 +31,12 @@ public class ChallengeScene extends Scene {
         this.endCondition = null;
     }
 
-    public ChallengeScene(String file){
-        String[] value = file.split("#");
+    /**
+     * Costruttore partendo dalla linea del file di testo
+     * @param line linea da tagliare
+     */
+    public ChallengeScene(String line){
+        String[] value = line.split("#");
         name = value[0];
         description=value[1];
         strength = Integer.parseInt(value[2]);
@@ -35,6 +47,17 @@ public class ChallengeScene extends Scene {
         condition = new Condition(Integer.parseInt(value[7]));
     }
 
+    /**
+     * Costruttore completo
+     * @param name nome
+     * @param c condition
+     * @param d descrizione
+     * @param s forza
+     * @param t tecnica
+     * @param win caso di vittoria
+     * @param lost caso di lose
+     * @param end end condition - collegare altre carte
+     */
     public ChallengeScene(String name , Condition c, String d, int s, int t, String win, String lost, Condition end){
         this.name = name;
         this.condition = c;
@@ -77,6 +100,13 @@ public class ChallengeScene extends Scene {
         return endCondition;
     }
 
+    /**
+     * Check Bonus
+     * @param pl c
+     * @param index indice init 0
+     * @return true se guadagna ALMENO un bonus
+     * altrimenti false
+     */
     public boolean checkBonus(Character pl, int index){
         if (index >= pl.getAbilityCount()) {
             return false;
@@ -88,6 +118,12 @@ public class ChallengeScene extends Scene {
         }
     }
 
+    /**
+     * Ritorna il bonus forza
+     * @param pl c
+     * @param index indice init 0
+     * @return la forza
+     */
     public int bonusStrength(Character pl, int index){
         if (index >= pl.getAbilityCount()) {
             return 0;
@@ -99,6 +135,12 @@ public class ChallengeScene extends Scene {
         }
     }
 
+    /**
+     * Ritorna il bonus della tecnica
+     * @param pl c
+     * @param index indice init 0
+     * @return la tecnica
+     */
     public int bonusTechnic(Character pl, int index){
         if (index >= pl.getAbilityCount()) {
             return 0;

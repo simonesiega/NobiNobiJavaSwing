@@ -35,6 +35,9 @@ public class Condition {
 
     /*
     * Controlla tutti i check del flag
+    * controlla ogni bit
+    * controllare path
+    * src/saves/dates/BitCondition.png
     */
 
     public boolean isMarket(){

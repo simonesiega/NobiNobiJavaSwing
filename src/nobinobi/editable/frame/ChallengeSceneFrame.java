@@ -12,26 +12,37 @@ import java.io.*;
 import java.util.Vector;
 
 public class ChallengeSceneFrame extends JFrame implements WindowListener {
+    /**
+     * Fields e txtArea per la creazione
+     */
     private JTextField txtName;
     private JTextArea txtDescrizione;
-
     private JTextArea txtWinDescrizione;
     private JTextArea txtLostDescrizione;
     private JTextField txtForza;
     private JTextField txtTecnica;
     private final Vector<JCheckBox> conditionsPanel = new Vector<>();
     private final Vector<JCheckBox> endconditionsPanel = new Vector<>();
+    /**
+     * Panel e Bottoni
+     */
     private JPanel pnlButtons;
     private JButton btnDelete;
     private JButton btnNew;
     private JButton btnSave;
     private JButton btnUpdate;
-
+    /**
+     * Lista delle ChallengeScene
+     */
     private JList<ChallengeSceneEditable> lstScene;
 
+    //Font
     private final Font f = new Font("Arial", Font.PLAIN, 18);
     private final Font fb = new Font("Arial", Font.BOLD, 18);
 
+    /**
+     * Vettore Scene e variabili per il selezionamento
+     */
     private final Vector<ChallengeSceneEditable> scenes = new Vector<>();
     private ChallengeSceneEditable currentScene = new ChallengeSceneEditable();
     private boolean isNew = true;
@@ -39,6 +50,7 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
     private JPanel cardPanel; // Pannello che contiene i pannelli delle checkbox
     private CardLayout cardLayout; // Layout per il cambio di pannelli
 
+    //Path per la lettura e scrittura
     private final String pathSave = "src/saves/dates/challengescene.csv";
 
     public ChallengeSceneFrame() {
@@ -61,7 +73,10 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
         loadScenes();
         refreshList();
     }
-
+    /**
+     * Metodo per la creazione dell pannello della lista di Cs
+     * @return
+     */
     private JPanel createListPanel() {
         JPanel pnl = new JPanel();
         GridBagLayout layout = new GridBagLayout();
@@ -122,7 +137,10 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
 
         return pnl;
     }
-
+    /**
+     * Metodo per la creazione del pannello per la creazione delle Cs
+     * @return
+     */
     private JPanel createDetailPanel() {
         JPanel pnl = new JPanel();
 
@@ -315,6 +333,11 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
         return pnl;
     }
 
+    /**
+     * Creazione delle CheckBox per le condition
+     * @param conditions
+     * @return
+     */
     private JPanel createCheckboxPanelCondition(Vector<JCheckBox> conditions) {
         JPanel checkboxPanel = new JPanel(new GridLayout(0, 4)); // 4 checkbox per riga
         String[] tecnicaLabels = {"Tutte/una", "Mercato", "Porto", "Città",
@@ -331,6 +354,11 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
         }
         return checkboxPanel;
     }
+    /**
+     * Creazione delle CheckBox per le endcondition
+     * @param conditions
+     * @return
+     */
     private JPanel createCheckboxPanelEndCondition(Vector<JCheckBox> conditions) {
         JPanel checkboxPanel = new JPanel(new GridLayout(0, 4)); // 4 checkbox per riga
         String[] tecnicaLabels = {"Tutte/una", "Mercato", "Porto", "Città",
@@ -349,12 +377,20 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
         return checkboxPanel;
     }
 
+    /**
+     * Metodo per la creazione dell'integerField
+     * @return
+     */
     private JTextField createIntegerField() {
         JTextField textField = new JTextField();
         ((PlainDocument) textField.getDocument()).setDocumentFilter(new IntegerFilter());
         return textField;
     }
 
+    /**
+     * Aggiorna i dati nello schermo con quelli della scena
+     * corrente
+     */
     public void refreshDetail() {
         txtName.setText(currentScene.getName());
         txtDescrizione.setText(currentScene.getDescription());
@@ -382,11 +418,15 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
         }
         */
     }
-
+    /**
+     * Metodo per il refresh della lista quando viene aggiunta un Character
+     */
     public void refreshList() {
         lstScene.setListData(scenes);
     }
-
+    /**
+     * Metodo per il caricamento dei Character nella Lista
+     */
     private void loadScenes() {
         File file = new File(pathSave);
         createFileIfNotExists(file);
@@ -404,7 +444,10 @@ public class ChallengeSceneFrame extends JFrame implements WindowListener {
             System.out.println(ioe.getMessage());
         }
     }
-
+    /**
+     * Metodo per la creazione del file se non esiste
+     * @param file
+     */
     private static void createFileIfNotExists(File file) {
         try {
             if (!file.exists()) {

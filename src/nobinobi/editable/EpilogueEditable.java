@@ -3,6 +3,10 @@ package nobinobi.editable;
 import nobinobi.Condition;
 import nobinobi.Epilogue;
 
+/**
+ * Classe che implementa l'epilogo del gioco
+ * NB é una classe editable
+ */
 public class EpilogueEditable extends Epilogue {
     public EpilogueEditable() {
         super();

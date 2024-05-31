@@ -40,6 +40,10 @@ public class Character {
         this.cards = new ArrayList<>();
     }
 
+    /**
+     * Costruttore partendo dalla linea del file di testo
+     * @param line linea da tagliare
+     */
     public Character(String line) {
         this.cards = new ArrayList<>();
         String[] s = line.split("#");
@@ -75,9 +79,11 @@ public class Character {
         abilities = new Ability[6];
         cards = new ArrayList<>(0);
     }
+
     public void setImage(String image){
         this.image = image;
     }
+
     /*
      * Getter
      * i setter sono in editable

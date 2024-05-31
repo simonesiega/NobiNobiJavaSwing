@@ -3,6 +3,10 @@ package nobinobi.editable;
 import nobinobi.ChallengeScene;
 import nobinobi.Condition;
 
+/**
+ * Classe che implementa la cs del gioco
+ * NB é una classe editable
+ */
 public class ChallengeSceneEditable extends ChallengeScene {
     public ChallengeSceneEditable() {
         super();

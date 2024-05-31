@@ -31,6 +31,10 @@ public class Card {
         this.technique = 0;
     }
 
+    /**
+     * Costruttore partendo dalla linea del file di testo
+     * @param line linea da tagliare
+     */
     public Card(String line){
         String[] l = line.split("#");
         name = l[0];

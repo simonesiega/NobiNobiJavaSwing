@@ -9,34 +9,45 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe che gestisce il set up del gioco
+ */
 public class InitGame {
     private final List<FrameData> frames;
     private int currentIndex;
     private boolean finish;
 
+    /**
+     * Aggiunge ciascun frame ad un arraylist di frame
+     */
     public InitGame() {
         frames = new ArrayList<>();
 
         // Aggiungi i frame con i relativi parametri
         // Da Modificare in base ai valori minimi
-        frames.add(new FrameData(new IntroductionFrame(), "src/saves/dates/introductions.csv", 0));
+        frames.add(new FrameData(new IntroductionFrame(), "src/saves/dates/introductions.csv", 1));
         frames.add(new FrameData(new AbilityFrame(), "src/saves/dates/abilities.csv", 6));
-        frames.add(new FrameData(new CharacterFrame(), "src/saves/dates/characters.csv", 0));
-        frames.add(new FrameData(new ChallengeSceneFrame(), "src/saves/dates/challengescene.csv", 0));
-        frames.add(new FrameData(new CardFrame(), "src/saves/dates/cards.csv", 0));
-        frames.add(new FrameData(new EpilogueFrame(), "src/saves/dates/epilogue.csv", 0));
+        frames.add(new FrameData(new CharacterFrame(), "src/saves/dates/characters.csv", 1));
+        frames.add(new FrameData(new ChallengeSceneFrame(), "src/saves/dates/challengescene.csv", 1));
+        frames.add(new FrameData(new CardFrame(), "src/saves/dates/cards.csv", 3));
+        frames.add(new FrameData(new EpilogueFrame(), "src/saves/dates/epilogue.csv", 3));
 
         currentIndex = 0;
         finish = false;
     }
 
-    public boolean getFinish(){return finish;}
-
+    /**
+     * Init set up
+     */
     public void initGame() {
         showNextFrame();
     }
 
+    /**
+     * Funzione ricorsiva che apre ognuno dei singoli frame
+     */
     private void showNextFrame() {
+        // Se continua la ricorsione
         if (currentIndex < frames.size()) {
             FrameData frameData = frames.get(currentIndex);
             Frame frame = frameData.frame();
@@ -46,7 +57,7 @@ public class InitGame {
                     @Override
                     public void windowClosing(WindowEvent e) {
                         try {
-                            boolean acceptClose = canClose(frameData.filename(), frameData.minLines(), frame);
+                            boolean acceptClose = canClose(frameData.filename(), frameData.minLines());
                             if (acceptClose) {
                                 jFrame.dispose();
                                 currentIndex++;
@@ -68,7 +79,13 @@ public class InitGame {
         }
     }
 
-    private boolean canClose(String filename, int min, Frame frame) {
+    /**
+     * Controlla se sono soddisfatti i requisiti per chiudere il frame
+     * @param filename nomne del file da cui leggere
+     * @param min minimo righe di dati da inserire per poter chiudere
+     * @return true se puó chiudere, altrimenti false
+     */
+    private boolean canClose(String filename, int min) {
         int c = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             while (br.readLine() != null) {
@@ -112,5 +129,11 @@ public class InitGame {
     */
 
     //Metodi impliciti getter
+    /**
+     * Record class che tiene traccia dei Frame
+     * @param frame Frame
+     * @param filename nome del file corrispondente
+     * @param minLines requisito linee
+     */
     private record FrameData(Frame frame, String filename, int minLines) {}
 }

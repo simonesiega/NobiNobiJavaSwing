@@ -6,10 +6,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Classe che si occupa di creare il file html di stampa finale
+ */
 public class CreateHtmlFile {
     private final String pathName;
     private PrintWriter writer;
 
+    /**
+     * Costruttore classe
+     * @param pathName path name del file da creare
+     */
     public CreateHtmlFile(String pathName) {
         this.pathName = pathName;
         try {
@@ -27,6 +34,9 @@ public class CreateHtmlFile {
         writer.write(line);
     }
 
+    /**
+     * init file html
+     */
     public void initFile(){
         saveLine("""
                 <!DOCTYPE html>
@@ -40,6 +50,9 @@ public class CreateHtmlFile {
                 """);
     }
 
+    /**
+     * completa file html
+     */
     public void finishFile(){
         saveLine("</body>\n" +
                 "</html>");
@@ -47,6 +60,9 @@ public class CreateHtmlFile {
         createCssFile();
     }
 
+    /**
+     * crea il file css
+     */
     private void createCssFile() {
         String cssPath = pathName.replace("Print.html", "Style.css");
         try (PrintWriter cssWriter = new PrintWriter(new FileOutputStream(cssPath))) {
@@ -77,7 +93,10 @@ public class CreateHtmlFile {
         }
     }
 
-    public void openDocument(String pathName){
+    /**
+     * apre il documento html
+     */
+    public void openDocument(){
         try {
             // Percorso del file HTML
             File htmlFile = new File(pathName);

@@ -10,14 +10,24 @@ import java.util.ArrayList;
  * Classe adibita alla lettura da file
  */
 public class ReaderFile {
+    /**
+     * Arraylist che contengono gli obj
+     */
     private final ArrayList<Character> characters = new ArrayList<>();
     private final ArrayList<Introduction> introductions = new ArrayList<>();
     private final ArrayList<Epilogue> epilogues = new ArrayList<>();
     private final ArrayList<ChallengeScene> challengeScenes = new ArrayList<>();
     private final ArrayList<Card> lightCards = new ArrayList<>();
     private final ArrayList<Card> darkCards = new ArrayList<>();
+
+    /**
+     * Reader per i file csv di testo
+     */
     private BufferedReader rdr;
 
+    /**
+     * Chiama i metodi read
+     */
     public ReaderFile(){
         readCharacter("src/saves/dates/characters.csv");
         readIntroduction("src/saves/dates/introductions.csv");
@@ -26,33 +36,14 @@ public class ReaderFile {
         readEpilogues("src/saves/dates/epilogue.csv");
     }
 
-    public ArrayList<Character> getCharacters () {
-        return characters;
-    }
-
-    public ArrayList<Introduction> getIntroductions () {
-        return introductions;
-    }
-
-    public ArrayList<Epilogue> getEpilogues () {
-        return epilogues;
-    }
-
-    public ArrayList<ChallengeScene> getChallengeScenes () {
-        return challengeScenes;
-    }
-
-    public ArrayList<Card> getDarkCards () {
-        return darkCards;
-    }
-
-    public ArrayList<Card> getLightCards () {
-        return lightCards;
-    }
 
     public BufferedReader getRdr () {
         return rdr;
     }
+
+    /**
+     * Metodi Read tramite rdr
+     */
 
     public void readCharacter(String FileName) {
         try {
@@ -152,5 +143,34 @@ public class ReaderFile {
         }
     }
 
+
+
+    /**
+     * Metodi Getter Per ritornare gli arraylist
+     */
+
+    public ArrayList<Character> getCharacters () {
+        return characters;
+    }
+
+    public ArrayList<Introduction> getIntroductions () {
+        return introductions;
+    }
+
+    public ArrayList<Epilogue> getEpilogues () {
+        return epilogues;
+    }
+
+    public ArrayList<ChallengeScene> getChallengeScenes () {
+        return challengeScenes;
+    }
+
+    public ArrayList<Card> getDarkCards () {
+        return darkCards;
+    }
+
+    public ArrayList<Card> getLightCards () {
+        return lightCards;
+    }
 
 }

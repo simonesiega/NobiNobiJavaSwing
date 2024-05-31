@@ -1,15 +1,16 @@
 package nobinobi;
 import java.io.PrintWriter;
 
+/**
+ * Classe epilogo
+ * Nella nuova implementazione estende cs
+ */
 public class Epilogue extends ChallengeScene {
-    /*protected String name;
-    protected Condition condition;
-    protected String description;
-    protected int strength;
-    protected int technique;
-    protected String winDescription;
-    protected String lostDescription;*/
 
+    /**
+     * Costruttore vuoto della classe
+     * Imposta tutto a vuoto/null
+     */
     public Epilogue(){
         this.name = "";
         this.condition = null;
@@ -20,6 +21,10 @@ public class Epilogue extends ChallengeScene {
         this.lostDescription = "";
     }
 
+    /**
+     * Costruttore partendo dalla linea del file di testo
+     * @param line linea da tagliare
+     */
     public Epilogue(String line){
         String[] value = line.split("#");
         name = value[0];
@@ -31,6 +36,16 @@ public class Epilogue extends ChallengeScene {
         condition = new Condition(Integer.parseInt(value[6]));
     }
 
+    /**
+     * Costruttore completo
+     * @param n nome
+     * @param c condizione
+     * @param d descrizione
+     * @param s forza
+     * @param t tecnica
+     * @param win descrizione caso vittoria
+     * @param lost descrizione caso persa
+     */
     public Epilogue(String n, Condition c, String d, int s, int t, String win, String lost){
         this.name = n;
         this.condition = c;
@@ -39,45 +54,6 @@ public class Epilogue extends ChallengeScene {
         this.technique = t;
         this.winDescription = win;
         this.lostDescription = lost;
-    }
-
-    public String getName () {
-        return name;
-    }
-
-    public Condition getCondition () {
-        return condition;
-    }
-
-    public String getDescription () {
-        return description;
-    }
-
-    public int getStrength () {
-        return strength;
-    }
-
-    public int getTechnique () {
-        return technique;
-    }
-
-    public String getWinDescription () {
-        return winDescription;
-    }
-
-    public String getLostDescription () {
-        return lostDescription;
-    }
-
-    public boolean checkBonus(Character pl, int index){
-        if (index >= pl.getAbilityCount()) {
-            return false;
-        } else {
-            if (pl.getAbility(index).getConditions().test(this.condition)) {
-                return true;
-            }
-            else return checkBonus(pl, index+1);
-        }
     }
 
     /**

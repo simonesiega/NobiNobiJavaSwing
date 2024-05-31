@@ -15,8 +15,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
-
+/**
+ * Classe che gestisce il character Frame
+ */
 public class CharacterFrame extends JFrame implements WindowListener{
     private JTextField txtName;
     private JTextArea txtDescrizione;
@@ -51,6 +52,9 @@ public class CharacterFrame extends JFrame implements WindowListener{
 
     private final String pathSave = "src/saves/dates/characters.csv";
 
+    /**
+     * Costruttore della classe
+     */
     public CharacterFrame() {
 
         super("Character Editor");
@@ -77,6 +81,10 @@ public class CharacterFrame extends JFrame implements WindowListener{
         refreshList();
     }
 
+    /**
+     * crea il Pannello con tutte le Introduzioni
+     * @return il Pannello costruito
+     */
     private JPanel createListPanel(){
         JPanel pnl = new JPanel();
         GridBagLayout layout = new GridBagLayout();
@@ -140,7 +148,10 @@ public class CharacterFrame extends JFrame implements WindowListener{
         return pnl;
     }
 
-
+    /**
+     * crea il Pannello con le etichette per l inserimento dei dati
+     * @return il Pannello
+     */
     private JPanel createDetailPanel(){
         JPanel pnl = new JPanel();
 
@@ -317,6 +328,10 @@ public class CharacterFrame extends JFrame implements WindowListener{
         return pnl;
     }
 
+    /**
+     * crea il Pannello con le abilitá
+     * @return il Pannello
+     */
     private JPanel createAbilityPanel() {
         JPanel pnl = new JPanel();
         GridBagLayout layout = new GridBagLayout();
@@ -345,7 +360,10 @@ public class CharacterFrame extends JFrame implements WindowListener{
         return pnl;
     }
 
-
+    /**
+     * Chiama la classe per ritornare solo numeri interi
+     * @return il campo da compilare
+     */
     private JTextField createIntegerField() {
         JTextField textField = new JTextField();
         ((PlainDocument) textField.getDocument()).setDocumentFilter(new IntegerFilter());
@@ -392,6 +410,10 @@ public class CharacterFrame extends JFrame implements WindowListener{
         lstScene.setListData(scenes);
     }
 
+    /**
+     * Refresha le abilitá
+     * @param n controlla quale abilitá sono up
+     */
     public void refreshAbilityDescription(String n){
         Ability ab = new Ability();
         for(Ability a : abilityOpt) {
@@ -404,6 +426,9 @@ public class CharacterFrame extends JFrame implements WindowListener{
         rDesLabel.setText(ab.getDescription());
     }
 
+    /**
+     * Carica i c Frame
+     */
     private void loadScenes() {
         File file = new File(pathSave);
         createFileIfNotExists(file);
@@ -448,6 +473,10 @@ public class CharacterFrame extends JFrame implements WindowListener{
         }
     }
 
+    /**
+     * Crea il File passato come parametro
+     * @param file File da creare
+     */
     private void createFileIfNotExists(File file) {
         try {
             if (!file.exists()) {
@@ -475,6 +504,10 @@ public class CharacterFrame extends JFrame implements WindowListener{
     public void windowOpened(WindowEvent e) {
     }
 
+    /**
+     * Quando la pagina viene chiusa salva automaticamente tutte le introduzioni
+     * @param e the event to be processed
+     */
     @Override
     public void windowClosing(WindowEvent e) {
         try{

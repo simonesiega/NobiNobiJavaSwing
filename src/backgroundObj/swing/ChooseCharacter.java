@@ -23,11 +23,13 @@ import java.util.ArrayList;
 /**
  * Classe che gestisce la scelta del character
  * si compone di due pannelli
- * A sinistra pannello con tutti i c
- * A destra informazioni c corrente
+ * A sinistra pannello con tutti i character
+ * A destra informazioni character corrente
  */
-public class ChooseCharacter extends JFrame implements WindowListener {
-
+public class ChooseCharacter extends JFrame implements WindowListener{
+    /**
+     * Fields per le info del character
+     */
     private JTextField nameField;
     private JLabel imageLabel;
 
@@ -37,13 +39,23 @@ public class ChooseCharacter extends JFrame implements WindowListener {
     private JTextField techniqueField;
     private JTextField strengthField;
 
+    private final int nRound;
+
+    /**
+     * Variabili per la Jlist
+     */
     private final ArrayList<Character> characters;
     private JList<Character> characterList;
-
+    //Character selezionato
     private Character player;
 
-    public ChooseCharacter() {
+    /**
+     * Costruttore della classe
+     * @param round Numero di round della partita
+     */
+    public ChooseCharacter(int round) {
         setTitle("Choose Character");
+        nRound = round;
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridBagLayout());
@@ -58,6 +70,9 @@ public class ChooseCharacter extends JFrame implements WindowListener {
         }
     }
 
+    /**
+     *Inizializzazione dei campi e dei panel
+     */
     private void initializeComponents() {
         // Modello e lista dei personaggi
         DefaultListModel<Character> characterListModel = new DefaultListModel<>();
@@ -115,6 +130,9 @@ public class ChooseCharacter extends JFrame implements WindowListener {
         strengthField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
 
+    /**
+     * Layout dei panel con i componenti
+     */
     private void layoutComponents() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -172,11 +190,12 @@ public class ChooseCharacter extends JFrame implements WindowListener {
         rightGbc.fill = GridBagConstraints.NONE;
         JButton chooseButton = new JButton("Scegli");
         chooseButton.addActionListener(e -> {
+
             player = characterList.getSelectedValue();
             JOptionPane.showMessageDialog(this, "Hai scelto " + player.getName());
 
             // Creazione menu swing
-            backgroundObj.swing.GameMenuFrame gmf = new backgroundObj.swing.GameMenuFrame(this.player);
+            backgroundObj.swing.GameMenuFrame gmf = new backgroundObj.swing.GameMenuFrame(nRound , this.player);//SELEZIONE DEL NUMERO DI ROUND
             gmf.setVisible(true);
             this.dispose();
         });
@@ -186,7 +205,18 @@ public class ChooseCharacter extends JFrame implements WindowListener {
         addComponent(rightPanel, gbc, 1, 0, 1, 3, GridBagConstraints.BOTH, 0.5, 1.0);
     }
 
-    // Metodo per aggiungere componenti al layout con GridBagConstraints
+    /**
+     * Metodo per aggiungere componenti al layout con GridBagConstraints
+     * @param component
+     * @param gbc
+     * @param gridx
+     * @param gridy
+     * @param gridwidth
+     * @param gridheight
+     * @param fill
+     * @param weightx
+     * @param weighty
+     */
     private void addComponent(Component component, GridBagConstraints gbc, int gridx, int gridy,
                               int gridwidth, int gridheight, int fill, double weightx, double weighty) {
         gbc.gridx = gridx;
@@ -199,7 +229,11 @@ public class ChooseCharacter extends JFrame implements WindowListener {
         add(component, gbc);
     }
 
-    // Aggiorna i dettagli del personaggio selezionato
+    /**
+     * Aggiorna i dettagli del personaggio selezionato
+     * @param c il carattere da visualizzare
+     * preleva OGNI parametro del c
+     */
     private void updateCharacterDetails(Character c) {
         setNameField(c.getName());
         setImageFromPath(c.getImage());
@@ -213,18 +247,25 @@ public class ChooseCharacter extends JFrame implements WindowListener {
         setAbilityArea(text.toString());
     }
 
-    // Metodi setter per aggiornare i campi di testo e le aree di testo
+    /**
+     * Set name nell etichetta
+     * @param name nome da settare
+     */
     public void setNameField(String name) {
         nameField.setText(name);
     }
 
+    /**
+     * Setta immagine del c a partire dal path
+     * @param imagePath path relativo dell immagine
+     */
     public void setImageFromPath(String imagePath) {
         try {
             File imageFile = new File(imagePath);
             if (!imageFile.exists()) {
-                imageFile = new File("src/img/cimg/player1.jpg");
+                imageFile = new File("src/img/cimg/error.jpg");
                 if (player != null) {
-                    player.setImage("src/img/cimg/player1.jpg");
+                    player.setImage("src/img/cimg/error.jpg");
                 }
             }
             ImageIcon originalIcon = new ImageIcon(ImageIO.read(imageFile));

@@ -11,6 +11,9 @@ import java.awt.event.WindowListener;
 import java.io.*;
 import java.util.Vector;
 
+/**
+ * Classe che gestisce l epilogo Frame
+ */
 public class EpilogueFrame extends JFrame implements WindowListener {
     private JTextField txtName;
     private JTextArea txtDescrizione;
@@ -37,6 +40,9 @@ public class EpilogueFrame extends JFrame implements WindowListener {
 
     private final String pathSave = "src/saves/dates/epilogue.csv";
 
+    /**
+     * Costruttore della classe
+     */
     public EpilogueFrame() {
         super("Epilogue Editor");
         setSize(800, 600);
@@ -57,6 +63,10 @@ public class EpilogueFrame extends JFrame implements WindowListener {
         loadScenes();
     }
 
+    /**
+     * crea il Pannello con tutte le Introduzioni
+     * @return il Pannello costruito
+     */
     private JPanel createListPanel(){
         JPanel pnl = new JPanel();
         GridBagLayout layout = new GridBagLayout();
@@ -119,7 +129,10 @@ public class EpilogueFrame extends JFrame implements WindowListener {
         return pnl;
     }
 
-
+    /**
+     * crea il Pannello con le etichette per l inserimento dei dati
+     * @return il Pannello
+     */
     private JPanel createDetailPanel(){
         JPanel pnl = new JPanel();
 
@@ -298,6 +311,10 @@ public class EpilogueFrame extends JFrame implements WindowListener {
         return pnl;
     }
 
+    /**
+     * Chiama la classe per ritornare solo numeri interi
+     * @return il campo da compilare
+     */
     private JTextField createIntegerField() {
         JTextField textField = new JTextField();
         ((PlainDocument) textField.getDocument()).setDocumentFilter(new IntegerFilter());
@@ -335,6 +352,9 @@ public class EpilogueFrame extends JFrame implements WindowListener {
         lstScene.setListData(scenes);
     }
 
+    /**
+     * Carica gli Epiloghi giá salvate
+     */
     private void loadScenes() {
         File file = new File(pathSave);
         createFileIfNotExists(file);
@@ -358,6 +378,10 @@ public class EpilogueFrame extends JFrame implements WindowListener {
         }
     }
 
+    /**
+     * Crea il File passato come parametro
+     * @param file File da creare
+     */
     private static void createFileIfNotExists(File file) {
         try {
             if (!file.exists()) {
