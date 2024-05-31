@@ -129,6 +129,6 @@ public class ChallengeScene extends Scene {
     }
 
     public String saveFinal(){
-        return "TITLE: "+title+"\n"+ "DESCRIPTION: "+description+"\n";
+        return "TITLE: "+name+"\n"+ "DESCRIPTION: "+description+"\n";
     }
 }
