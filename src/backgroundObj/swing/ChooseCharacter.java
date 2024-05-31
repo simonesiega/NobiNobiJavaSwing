@@ -40,8 +40,6 @@ public class ChooseCharacter extends JFrame implements WindowListener {
     private final ArrayList<Character> characters;
     private JList<Character> characterList;
 
-    private DefaultListModel<Character> characterListModel;
-
     private Character player;
 
     public ChooseCharacter() {
@@ -62,7 +60,7 @@ public class ChooseCharacter extends JFrame implements WindowListener {
 
     private void initializeComponents() {
         // Modello e lista dei personaggi
-        characterListModel = new DefaultListModel<>();
+        DefaultListModel<Character> characterListModel = new DefaultListModel<>();
         for (Character c : characters) {
             characterListModel.addElement(c);
         }
@@ -177,6 +175,7 @@ public class ChooseCharacter extends JFrame implements WindowListener {
             player = characterList.getSelectedValue();
             JOptionPane.showMessageDialog(this, "Hai scelto " + player.getName());
 
+            // Creazione menu swing
             backgroundObj.swing.GameMenuFrame gmf = new backgroundObj.swing.GameMenuFrame(this.player);
             gmf.setVisible(true);
             this.dispose();
@@ -283,9 +282,4 @@ public class ChooseCharacter extends JFrame implements WindowListener {
 
     @Override
     public void windowDeactivated(WindowEvent e) { }
-
-    public static void main(String[] args) {
-        ChooseCharacter c = new ChooseCharacter();
-        c.setVisible(true);
-    }
 }

@@ -5,10 +5,6 @@ import java.io.*;
 public class GameSwing {
 
     public GameSwing(){
-
-    }
-
-    public void playRound(){
         ChooseCharacter ch = new ChooseCharacter();
         ch.setVisible(true);
     }

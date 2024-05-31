@@ -15,16 +15,15 @@ import java.util.Random;
 public class GameMenuFrame extends JFrame implements ActionListener {
     private final Random random = new Random();
     private int round = 0;
-    private ReaderFile RF = new ReaderFile();
-    private Character Player;
-    private ArrayList<Introduction> Introductions = RF.getIntroductions();
-    private ArrayList<ChallengeScene> challengeScenes = RF.getChallengeScenes();
-    private JButton nextButton;
-    private JTextArea textArea;
+    private final ReaderFile RF = new ReaderFile();
+    private final Character Player;
+    private final ArrayList<Introduction> Introductions = RF.getIntroductions();
+    private final ArrayList<ChallengeScene> challengeScenes = RF.getChallengeScenes();
+    private final JTextArea textArea;
     private ChallengeScene cs;
     private ChallengeScene cs2;
     private Introduction intro;
-    private CreateHtmlFile saveF = new CreateHtmlFile("src/saves/gameplay/finalprint/Print.html");
+    private final CreateHtmlFile saveF = new CreateHtmlFile("src/saves/gameplay/finalprint/Print.html");
 
     public GameMenuFrame(Character player) {
         this.Player = player;
@@ -37,7 +36,7 @@ public class GameMenuFrame extends JFrame implements ActionListener {
         saveF.initFile();
 
         JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
-        nextButton = createButton("Next");
+        JButton nextButton = createButton("Next");
         buttonPanel.add(nextButton);
         nextButton.addActionListener(this);
 
