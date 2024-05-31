@@ -362,6 +362,7 @@ public class CharacterFrame extends JFrame implements WindowListener{
         txtDescrizione.setText(currentScene.getDescription());
         txtForza.setText(Integer.toString(currentScene.getStrength()));
         txtTecnica.setText(Integer.toString(currentScene.getTechnique()));
+        txtImmagine.setText(currentScene.getImage());
         if(currentScene.getGenre() == 'M'){
             chkM.setSelected(true);
             chkF.setSelected(false);

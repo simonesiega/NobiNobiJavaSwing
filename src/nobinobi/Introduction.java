@@ -7,7 +7,7 @@ import java.io.PrintWriter;
  */
 public class Introduction extends Scene {
 
-    private Condition endCondition;
+    protected Condition endCondition;
 
     /**
      * Costruttore di introduction
@@ -37,7 +37,7 @@ public class Introduction extends Scene {
         title=value[0];
         description=value[1];
         image=value[2];
-        // Condition endCondition = new Condition(Integer.parseInt(value[3]));
+        endCondition = new Condition(Integer.parseInt(value[3]));
     }
 
     public Condition getEndCondition () {
@@ -47,7 +47,7 @@ public class Introduction extends Scene {
     @Override
     public void saveToFile(PrintWriter out){
         System.out.println(this.getTitle()+"#"+this.getDescription()+"#"+this.getImage());
-        out.println(this.getTitle()+"#"+this.getDescription()+"#"+this.getImage());
+        out.println(this.getTitle()+"#"+this.getDescription()+"#"+this.getImage() + "#"+this.getEndCondition().getCondition());
     }
 
     /**

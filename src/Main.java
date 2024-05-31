@@ -1,28 +1,15 @@
 import backgroundObj.swing.*;
-import backgroundObj.InitGame;
-import nobinobi.Character;
+
+import java.io.IOException;
+
+import java.net.URISyntaxException;
 
 public class Main {
-    public static void main(String[] args) {
-        InitGame init = new InitGame();
-        init.initGame();
+    public static void main(String[] args) throws IOException, URISyntaxException {
 
-        //Finché tutti i frame non sono conclusi non va avanti
-        while (!init.getFinish()){
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        GameSwing test = new GameSwing();
+        test.playRound();
 
 
-
-        /*
-        GameTestuale test = new GameTestuale();
-        test.play();
-        */
-        GameSwing gs = new GameSwing();
-        gs.playRound();
     }
 }

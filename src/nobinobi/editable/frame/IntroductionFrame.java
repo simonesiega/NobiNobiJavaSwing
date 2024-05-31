@@ -1,18 +1,14 @@
 package nobinobi.editable.frame;
 
-import java.awt.GridLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.Vector;
-
 import javax.swing.*;
-
+import nobinobi.Condition;
 import nobinobi.editable.*;
 
-public class IntroductionFrame extends JFrame implements WindowListener{
+public class IntroductionFrame extends JFrame implements WindowListener {
     private JTextField txtTitolo;
     private JTextArea txtDescrizione;
     private JTextField txtImmagine;
@@ -22,8 +18,11 @@ public class IntroductionFrame extends JFrame implements WindowListener{
     private JButton btnSave;
     private JButton btnUpdate;
 
-    private JList<IntroductionEditable> lstScene;
+    private final Vector<JCheckBox> endconditionsPanel = new Vector<>();
 
+    private JList<IntroductionEditable> lstScene;
+    private JPanel cardPanel; // Pannello che contiene i pannelli delle checkbox
+    private CardLayout cardLayout; // Layout per il cambio di pannelli
     private final Font f = new Font("Arial", Font.PLAIN, 18);
     private final Font fb = new Font("Arial", Font.BOLD, 18);
 
@@ -96,14 +95,13 @@ public class IntroductionFrame extends JFrame implements WindowListener{
         btnSave = new JButton("Salva");
         btnSave.setFont(fb);
         btnSave.addActionListener(e -> {
-            try{
+            try {
                 PrintWriter writer = new PrintWriter(new FileOutputStream(pathSave));
                 for (IntroductionEditable ie : scenes) {
                     ie.saveToFile(writer);
                 }
                 writer.close();
-            }
-            catch(IOException ioe){
+            } catch(IOException ioe) {
                 System.out.println(ioe.getMessage());
             }
         });
@@ -115,8 +113,7 @@ public class IntroductionFrame extends JFrame implements WindowListener{
         return pnl;
     }
 
-
-    private JPanel createDetailPanel(){
+    private JPanel createDetailPanel() {
         JPanel pnl = new JPanel();
 
         GridBagLayout layout = new GridBagLayout();
@@ -158,6 +155,27 @@ public class IntroductionFrame extends JFrame implements WindowListener{
         c.weighty = 2;
         pnl.add(txtImmagine, c);
 
+        cardLayout = new CardLayout();
+        cardPanel = new JPanel(cardLayout);
+        cardPanel.add(createCheckboxPanelEndCondition(endconditionsPanel), "panel2");
+        c.gridy++;
+        c.weighty = 1;
+        pnl.add(cardPanel, c);
+
+        JPanel controlPanel = new JPanel(new GridLayout(1, 2)); // 2 Cosí si puó aggiungere immediatamente il bottone deseleziona tutto
+
+        JCheckBox selectAllCheckBox = new JCheckBox("Seleziona tutto");
+        selectAllCheckBox.setFont(f);
+        selectAllCheckBox.addActionListener(e -> {
+            for (JCheckBox checkBox : endconditionsPanel) {
+                checkBox.setSelected(selectAllCheckBox.isSelected());
+            }
+        });
+        controlPanel.add(selectAllCheckBox);
+        c.gridy++;
+        c.weighty = 1;
+        pnl.add(controlPanel, c);
+
         pnlButtons = new JPanel();
         pnlButtons.setLayout(new GridLayout(1, 5));
         btnNew = new JButton("Nuovo");
@@ -178,17 +196,28 @@ public class IntroductionFrame extends JFrame implements WindowListener{
             }
             currentScene.setDescription(txtDescrizione.getText());
             currentScene.setImage(txtImmagine.getText());
+
+            int flag2 = 0;
+            for (int i = 0; i < endconditionsPanel.size(); i++) {
+                if (endconditionsPanel.get(i).isSelected()) {
+                    flag2 += Math.pow(2, i);
+                }
+            }
+            Condition endcondition = new Condition(flag2);
+            currentScene.setEndCondition(endcondition);
+
             if (isNew){
                 scenes.add(currentScene);
                 isNew = false;
             }
             refreshList();
         });
+
         pnlButtons.add(btnUpdate);
         c.gridy++;
         c.weighty = 1;
         pnl.add(pnlButtons, c);
-
+        refreshList();
         return pnl;
     }
 
@@ -200,6 +229,21 @@ public class IntroductionFrame extends JFrame implements WindowListener{
         txtTitolo.setText(currentScene.getTitle());
         txtDescrizione.setText(currentScene.getDescription());
         txtImmagine.setText(currentScene.getImage());
+
+        for (JCheckBox a : endconditionsPanel) {
+            a.setSelected(false);
+        }
+
+        // Aggiungi codice per impostare lo stato delle checkbox in base a currentScene.getEndCondition()
+        Condition endCondition = currentScene.getEndCondition();
+        if (endCondition != null) {
+            int flag2 = endCondition.getCondition();
+            for (int i = 0; i < endconditionsPanel.size(); i++) {
+                if ((flag2 & (1 << i)) != 0) {
+                    endconditionsPanel.get(i).setSelected(true);
+                }
+            }
+        }
     }
 
     public void refreshList(){
@@ -214,10 +258,6 @@ public class IntroductionFrame extends JFrame implements WindowListener{
             String line;
             scenes.clear();
             while ((line = reader.readLine()) != null && !line.isEmpty())
-                /*
-                 * Condizione != "" altrimenti primo giro array nel costruttore di Scene ha dimensione 1
-                 * ritorna quindi errore su value[1]
-                 */
             {
                 scenes.add(new IntroductionEditable(line));
             }
@@ -232,14 +272,6 @@ public class IntroductionFrame extends JFrame implements WindowListener{
     private static void createFileIfNotExists(File file) {
         try {
             if (!file.exists()) {
-                /*
-                if (file.createNewFile()) {
-                    System.out.println("File 'scenes.csv' creato con successo.");
-                } else {
-                    System.out.println("Impossibile creare il file 'scenes.csv'.");
-                    System.exit(-1);
-                }
-                */
                 if (!file.createNewFile()) {
                     System.out.println("Impossibile creare il file 'scenes.csv'.");
                     System.exit(-1);
@@ -252,9 +284,26 @@ public class IntroductionFrame extends JFrame implements WindowListener{
         }
     }
 
-    @Override
-    public void windowOpened(WindowEvent e) {
+    private JPanel createCheckboxPanelEndCondition(Vector<JCheckBox> conditions) {
+        JPanel checkboxPanel = new JPanel(new GridLayout(0, 4)); // 4 checkbox per riga
+        String[] tecnicaLabels = {"Tutte/una", "Mercato", "Porto", "Città",
+                "Villaggio", "Castello", "Chiesa", "Foresta",
+                "Prateria", "Montagna", "Deserto", "Collina",
+                "Mare", "Lago", "Fiume", "Luna",
+                "Cielo", "PNGSingolo", "PNGGruppo", "PNGFemmina",
+                "PNGMaschio"}; // Array di etichette per le checkbox
+        for (String label : tecnicaLabels) {
+            JCheckBox checkBox = new JCheckBox(label);
+            conditions.add(checkBox);
+            checkBox.setFont(f);
+            checkBox.setForeground(Color.RED);
+            checkboxPanel.add(checkBox);
+        }
+        return checkboxPanel;
     }
+
+    @Override
+    public void windowOpened(WindowEvent e) {}
 
     /**
      * Quando la pagina viene chiusa salva automaticamente tutte le introduzioni
@@ -262,14 +311,13 @@ public class IntroductionFrame extends JFrame implements WindowListener{
      */
     @Override
     public void windowClosing(WindowEvent e) {
-        try{
+        try {
             PrintWriter writer = new PrintWriter(new FileOutputStream(pathSave));
             for (IntroductionEditable ie : scenes) {
                 ie.saveToFile(writer);
             }
             writer.close();
-        }
-        catch(IOException ioe){
+        } catch(IOException ioe) {
             System.out.println(ioe.getMessage());
         }
     }
@@ -278,18 +326,14 @@ public class IntroductionFrame extends JFrame implements WindowListener{
     public void windowClosed(WindowEvent e) {}
 
     @Override
-    public void windowIconified(WindowEvent e) {
-    }
+    public void windowIconified(WindowEvent e) {}
 
     @Override
-    public void windowDeiconified(WindowEvent e) {
-    }
+    public void windowDeiconified(WindowEvent e) {}
 
     @Override
-    public void windowActivated(WindowEvent e) {
-    }
+    public void windowActivated(WindowEvent e) {}
 
     @Override
-    public void windowDeactivated(WindowEvent e) {
-    }
+    public void windowDeactivated(WindowEvent e) {}
 }

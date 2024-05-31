@@ -78,7 +78,7 @@ public class ChallengeScene extends Scene {
     }
 
     public boolean checkBonus(Character pl, int index){
-        if (index > pl.getAbilityCount()) {
+        if (index >= pl.getAbilityCount()) {
             return false;
         } else {
             if (pl.getAbility(index).getConditions().test(this.condition)) {
@@ -126,5 +126,9 @@ public class ChallengeScene extends Scene {
     @Override
     public Scene loadFromFile (String line) {
         return new ChallengeScene(line);
+    }
+
+    public String saveFinal(){
+        return "TITLE: "+title+"\n"+ "DESCRIPTION: "+description+"\n";
     }
 }

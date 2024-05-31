@@ -90,4 +90,8 @@ abstract class Scene {
         // return "TITLE: "+title+"\n"+ "DESCRIPTION: "+description+"\n"+ "IMAGE: "+image+"\n";
         return title;
     }
+
+    public String saveFinal(){
+        return "TITLE: "+title+"\n"+ "DESCRIPTION: "+description+"\n";
+    }
 }

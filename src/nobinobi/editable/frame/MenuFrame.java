@@ -102,6 +102,11 @@ public class MenuFrame extends JFrame implements WindowListener{
         return pnl;
     }
 
+    public static void main (String[] args) {
+        MenuFrame mf = new MenuFrame();
+        mf.setVisible(true);
+    }
+
     @Override
     public void windowOpened(WindowEvent e) {
     }

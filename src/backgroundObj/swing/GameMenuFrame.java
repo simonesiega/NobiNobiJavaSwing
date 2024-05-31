@@ -26,7 +26,12 @@ public class GameMenuFrame extends JFrame implements ActionListener {
     private JButton technicianButton;
     private JButton strengthButton;
     private JTextArea textArea;
+    private ChallengeScene cs;
+    private ChallengeScene cs2;
+    private Introduction intro;
 
+
+    private CreateHtmlFile saveF = new CreateHtmlFile("src/saves/gameplay/finalprint/Print.html");
 
     public GameMenuFrame(Character player) {
 
@@ -36,6 +41,8 @@ public class GameMenuFrame extends JFrame implements ActionListener {
         setSize(400, 300);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
+
+        saveF.initFile();
 
         JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
         nextButton = createButton("Next");
@@ -74,16 +81,34 @@ public class GameMenuFrame extends JFrame implements ActionListener {
 
     private void handleNextButton() {
 
-        if(round == 3){
-            Epilogue ep = RF.getEpilogues().get(random.nextInt(RF.getEpilogues().size()));
+        if(cs != null){
+            cs2 = cs;
+        }
+
+        if(round == 2){
+            Epilogue ep = PickEpilogue(cs2);
             textArea.append("EPILOGO" + "\n");
+            saveF.saveLine(ep.saveFinal() + "\n");
+            saveF.finishFile();
             textArea.append(ep.getTitle() + "\n");
             textArea.append(ep.getDescription()+ "\n");
             //HO FATTO SI CHE EPILOGUE EREDITASSE DA CHALLENGESCENE
             RoundFrame rf = new RoundFrame(Player , ep , round);
             rf.setVisible(true);
         }else{
-            ChallengeScene cs = challengeScenes.get(random.nextInt(challengeScenes.size()));
+            if(round == 1){
+                cs = Pick(intro);
+            }
+            else{
+                if(round/2 == 0){
+                    cs2  = Pick(cs);
+                }
+                else{
+                    cs = Pick(cs2);
+                }
+            }
+
+            saveF.saveLine(cs.saveFinal() + "<br>\n");
             textArea.append("Round "+ round + ": " + cs.getName() + "\n");
             RoundFrame roundFrame = new RoundFrame(Player , cs , round );
             roundFrame.setVisible(true);
@@ -91,12 +116,55 @@ public class GameMenuFrame extends JFrame implements ActionListener {
 
             round ++;
         }
-
     }
     private void play(){
-        Introduction intro = Introductions.get(random.nextInt(Introductions.size()));
+        intro = Introductions.get(random.nextInt(Introductions.size()));
+        saveF.saveLine(intro.saveFinal() + "<br>\n");
         textArea.append(intro.getTitle() + "\n");
         textArea.append(intro.getDescription()+ "\n");
+        round++;
+    }
+    public ChallengeScene Pick(Introduction i){
+        ArrayList<ChallengeScene> tmp = new ArrayList<>();
+        for(ChallengeScene c : challengeScenes){
+            if((c.getEndCondition().getCondition() & i.getEndCondition().getCondition()) == i.getEndCondition().getCondition()){
+                tmp.add(c);
+            }
+
+        }
+        if(tmp.isEmpty()){
+            tmp.add(challengeScenes.get(random.nextInt(challengeScenes.size())));
+        }
+
+        return(tmp.get(random.nextInt(tmp.size())))  ;
+    }
+    public ChallengeScene Pick(ChallengeScene i){
+        ArrayList<ChallengeScene> tmp = new ArrayList<>();
+        for(ChallengeScene c : challengeScenes){
+            if((c.getEndCondition().getCondition() & i.getEndCondition().getCondition()) == i.getEndCondition().getCondition()){
+                tmp.add(c);
+            }
+
+        }
+        if(tmp.isEmpty()){
+            tmp.add(challengeScenes.get(random.nextInt(challengeScenes.size())));
+        }
+
+        return(tmp.get(random.nextInt(tmp.size()))) ;
+    }
+    public Epilogue PickEpilogue(ChallengeScene i){
+        ArrayList<Epilogue> tmp = new ArrayList<>();
+        for(Epilogue c : RF.getEpilogues()){
+            if((c.getCondition().getCondition() & i.getEndCondition().getCondition()) == i.getEndCondition().getCondition()){
+                tmp.add(c);
+            }
+
+        }
+        if(tmp.isEmpty()){
+            tmp.add(RF.getEpilogues().get(random.nextInt(RF.getEpilogues().size())));
+        }
+
+        return(tmp.get(random.nextInt(tmp.size()))) ;
     }
 
 

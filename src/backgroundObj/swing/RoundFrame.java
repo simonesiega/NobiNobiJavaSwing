@@ -202,21 +202,14 @@ public class RoundFrame extends JFrame implements ActionListener {
         proceedToNextPartButton = createButton("Next Part");
         proceedToNextPartButton.setEnabled(false);
         proceedToNextPartButton.addActionListener(e -> {
-            proceedToNextPart();
             proceedToNextPartButton.setEnabled(false);
-
+            proceedToNextPart();
             // Salvataggio round
             // writeRound nel file round + nRound
-            // writeFinal nel file condiviso finale
             try{
                 PrintWriter writerRound = new PrintWriter(new FileOutputStream("src/saves/gameplay/round/round" + nRound + ".csv"));
                 writerRound.write(textAreaLeft.getText());
-                PrintWriter writerFinal = new PrintWriter(new FileOutputStream("src/saves/gameplay/stampaFinale.csv"));
-                writerFinal.write("Round numero: " + nRound + '\n');
-                writerFinal.write(prova.getName() + '\n');
-                writerFinal.write(prova.getDescription() + '\n');
                 writerRound.close();
-                writerFinal.close();
             }
             catch(IOException ioe){
                 System.out.println(ioe.getMessage());

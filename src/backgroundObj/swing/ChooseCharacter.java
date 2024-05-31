@@ -1,27 +1,47 @@
 package backgroundObj.swing;
 
+// Classi del progetto
 import nobinobi.Character;
 
+// Java swing lib
 import javax.swing.*;
+
+// Java user interface
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+
+// Input Output
 import java.io.File;
 import java.io.IOException;
+
+// Img
 import javax.imageio.ImageIO;
+
 import java.util.ArrayList;
 
+/**
+ * Classe che gestisce la scelta del character
+ * si compone di due pannelli
+ * A sinistra pannello con tutti i c
+ * A destra informazioni c corrente
+ */
 public class ChooseCharacter extends JFrame implements WindowListener {
 
     private JTextField nameField;
     private JLabel imageLabel;
+
     private JTextArea abilityArea;
     private JTextArea descriptionArea;
+
     private JTextField techniqueField;
     private JTextField strengthField;
-    private ArrayList<Character> characters;
+
+    private final ArrayList<Character> characters;
     private JList<Character> characterList;
+
     private DefaultListModel<Character> characterListModel;
+
     private Character player;
 
     public ChooseCharacter() {
@@ -32,7 +52,7 @@ public class ChooseCharacter extends JFrame implements WindowListener {
         ReaderFile RF = new ReaderFile();
         characters = RF.getCharacters();
 
-        initializeComponents(characters);
+        initializeComponents();
         layoutComponents();
 
         if (!characters.isEmpty()) {
@@ -40,7 +60,7 @@ public class ChooseCharacter extends JFrame implements WindowListener {
         }
     }
 
-    private void initializeComponents(ArrayList<Character> characters) {
+    private void initializeComponents() {
         // Modello e lista dei personaggi
         characterListModel = new DefaultListModel<>();
         for (Character c : characters) {

@@ -1,4 +1,5 @@
 package nobinobi.editable;
+import nobinobi.Condition;
 import nobinobi.Introduction;
 
 /**
@@ -30,6 +31,9 @@ public class IntroductionEditable extends Introduction{
     }
     public void setImage(String image) {
         this.image = image;
+    }
+    public void setEndCondition(Condition c){
+        this.endCondition = c;
     }
 
 }
