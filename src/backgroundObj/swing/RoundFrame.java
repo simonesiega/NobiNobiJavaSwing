@@ -324,8 +324,7 @@ public class RoundFrame extends JFrame implements ActionListener {
         rightGbc.gridy = 5;
         rightGbc.weighty = 1.0;
         rightGbc.fill = GridBagConstraints.BOTH;
-        JScrollPane scrollPaneRight = new JScrollPane(textAreaRight);
-        rightPanel.add(scrollPaneRight, rightGbc);
+        rightPanel.add(textAreaRight, rightGbc);
 
         addComponent(rightPanel, gbc, 2, 0, 1, 3, GridBagConstraints.BOTH, 0.5, 1.0);
     }
