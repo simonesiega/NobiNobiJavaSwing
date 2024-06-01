@@ -6,6 +6,7 @@ import nobinobi.Epilogue;
 import nobinobi.Introduction;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -107,7 +108,7 @@ public class GameMenuFrame extends JFrame implements ActionListener{
 
             textArea.append("\nEPILOGO: ");
             textArea.append(ep.getName() + "\n");
-            textArea.append(ep.getDescription());
+            printDescLine(ep.getDescription());
 
             RoundFrame rf = new RoundFrame(Player, ep, round);
             rf.setVisible(true);
@@ -160,7 +161,8 @@ public class GameMenuFrame extends JFrame implements ActionListener{
         intro = Introductions.get(random.nextInt(Introductions.size()));
         saveF.saveLine("<h1 id='intro-title'>" + "INTRODUZIONE: "  + intro.getTitle() + "</h1>\n<p id='intro-description'>" + intro.getDescription() + "</p>\n<br><br>");
         textArea.append("INTRODUZIONE: " + intro.getTitle() + "\n");
-        textArea.append(intro.getDescription() + "\n\n");
+        printDescLine(intro.getDescription() + "\n\n");
+        // textArea.append(intro.getDescription() + "\n\n");
         round++;
     }
 
@@ -206,6 +208,32 @@ public class GameMenuFrame extends JFrame implements ActionListener{
         }
 
         return (tmp.get(random.nextInt(tmp.size())));
+    }
+
+    /**
+     * Stampa la stringa line incolonnata
+     * @param line stringa da stampare
+     */
+    private void printDescLine(String line){
+        ArrayList<StringBuilder> lines = new ArrayList<>();
+        StringBuilder tmp = new StringBuilder();
+        int c = 0;
+        for (int i = 0; i < line.length(); i++) {
+            tmp.append(line.charAt(i));
+            if (c > 100 && line.charAt(i) == ' ') {
+                tmp.append("\n");
+                lines.add(tmp);
+                tmp = new StringBuilder();
+                c = 0;
+            }
+            if (i == line.length() - 1){
+                lines.add(tmp);
+            }
+            c++;
+        }
+        for (int i = 0; i < lines.size(); i++) {
+            textArea.append(lines.get(i).toString());
+        }
     }
 
     /**

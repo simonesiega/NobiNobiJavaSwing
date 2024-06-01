@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 // Img
 import javax.imageio.ImageIO;
@@ -216,6 +217,7 @@ public class RoundFrame extends JFrame implements ActionListener {
             } catch (IOException ioe) {
                 System.out.println(ioe.getMessage());
             }
+            this.dispose();
         });
 
         nameField = new JTextField(20);
@@ -400,7 +402,9 @@ public class RoundFrame extends JFrame implements ActionListener {
         textAreaLeft.append("Round numero: " + nRound + " \n\n");
         textAreaLeft.append("TITOLO: " + prova.getName());
         textAreaLeft.append("\n\n");
-        textAreaLeft.append("DESCRIZIONE: " + prova.getDescription());
+        // textAreaLeft.append("DESCRIZIONE: " + prova.getDescription());
+        // printDescLine("DESCRIZIONE: " + prova.getDescription());
+        printDescLine("DESCRIZIONE: " + prova.getDescription());
         textAreaLeft.append("\n\n");
 
         // Controllo per vedere il tipo di prova scelta
@@ -439,17 +443,45 @@ public class RoundFrame extends JFrame implements ActionListener {
     private void proceedToNextPart() {
         // Caso prova vinta
         if (t > limit) {
-            textAreaLeft.append("\nHai vinto la prova:\n" + prova.getWinDescription() + "\n");
+            // textAreaLeft.append("\nHai vinto la prova:\n" + prova.getWinDescription() + "\n");
+            printDescLine("\nHai vinto la prova:\n" + prova.getWinDescription() + "\n");
             character.addCard(rf.getLightCards().get(dice.roll(rf.getLightCards().size() - 1)));
             textAreaLeft.append("Hai guadagnato la seguente carta: " + character.getCard(character.getCardCount() - 1) + '\n');
             textAreaLeft.append(character.getCard(character.getCardCount() - 1).getDescription());
         }
         // Caso prova persa
         else {
-            textAreaLeft.append("\nHai perso la prova: " + prova.getLostDescription() + "\n");
+            // textAreaLeft.append("\nHai perso la prova: " + prova.getLostDescription() + "\n");
+            printDescLine("\nHai perso la prova: " + prova.getLostDescription() + "\n");
             character.addCard(rf.getDarkCards().get(dice.roll(rf.getDarkCards().size() - 1)));
             textAreaLeft.append("Hai guadagnato la seguente carta: " + character.getCard(character.getCardCount() - 1) + "\n");
             textAreaLeft.append(character.getCard(character.getCardCount() - 1).getDescription());
+        }
+    }
+
+    /**
+     * Stampa la stringa line incolonnata
+     * @param line stringa da stampare
+     */
+    private void printDescLine(String line){
+        ArrayList<StringBuilder> lines = new ArrayList<>();
+        StringBuilder tmp = new StringBuilder();
+        int c = 0;
+        for (int i = 0; i < line.length(); i++) {
+            tmp.append(line.charAt(i));
+            if (c > 100 && line.charAt(i) == ' ') {
+                tmp.append("\n");
+                lines.add(tmp);
+                tmp = new StringBuilder();
+                c = 0;
+            }
+            if (i == line.length() - 1){
+                lines.add(tmp);
+            }
+            c++;
+        }
+        for (int i = 0; i < lines.size(); i++) {
+            textAreaLeft.append(lines.get(i).toString());
         }
     }
 
