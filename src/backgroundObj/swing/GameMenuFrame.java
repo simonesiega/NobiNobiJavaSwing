@@ -124,6 +124,8 @@ public class GameMenuFrame extends JFrame implements ActionListener{
                 cs = Pick(intro);
 
                 roundFrame = new RoundFrame(Player, cs, round);
+                saveF.saveLine("<h3 class='round-title'>Round " + round + ": " + cs.getName() + "</h3>\n<p class='round-description'>" + cs.getDescription() + "</p>\n<br>");
+                textArea.append("Round " + round + ": " + cs.getName() + "\n");
             }
             else {
 
@@ -131,15 +133,16 @@ public class GameMenuFrame extends JFrame implements ActionListener{
                 if (round % 2 == 0) {
                     cs2 = Pick(cs);
                     roundFrame = new RoundFrame(Player, cs2, round);
+                    saveF.saveLine("<h3 class='round-title'>Round " + round + ": " + cs2.getName() + "</h3>\n<p class='round-description'>" + cs2.getDescription() + "</p>\n<br>");
+                    textArea.append("Round " + round + ": " + cs2.getName() + "\n");
                 }// se è dispari pesco dalla endocondition di cs2
                 else {
                     cs = Pick(cs2);
                     roundFrame = new RoundFrame(Player, cs, round);
+                    saveF.saveLine("<h3 class='round-title'>Round " + round + ": " + cs.getName() + "</h3>\n<p class='round-description'>" + cs.getDescription() + "</p>\n<br>");
+                    textArea.append("Round " + round + ": " + cs.getName() + "\n");
                 }
             }
-            //salvataggio
-            saveF.saveLine("<h3 class='round-title'>Round " + round + ": " + cs.getName() + "</h3>\n<p class='round-description'>" + cs.getDescription() + "</p>\n<br>");
-            textArea.append("Round " + round + ": " + cs.getName() + "\n");
 
             //creazione roundframe dalla cs
             roundFrame.setVisible(true);
@@ -169,7 +172,10 @@ public class GameMenuFrame extends JFrame implements ActionListener{
     public ChallengeScene Pick(Introduction i) {
         ArrayList<ChallengeScene> tmp = new ArrayList<>();
         for (ChallengeScene c : challengeScenes) {
-            if ((c.getEndCondition().getCondition() & i.getEndCondition().getCondition()) == i.getEndCondition().getCondition()) {
+            /*if ((c.getEndCondition().getCondition() & i.getEndCondition().getCondition()) == i.getEndCondition().getCondition()) {
+                tmp.add(c);
+            }*/
+            if ((c.getEndCondition().getCondition() & i.getEndCondition().getCondition()) != 0 ) {
                 tmp.add(c);
             }
         }
@@ -188,7 +194,10 @@ public class GameMenuFrame extends JFrame implements ActionListener{
     public ChallengeScene Pick(ChallengeScene i) {
         ArrayList<ChallengeScene> tmp = new ArrayList<>();
         for (ChallengeScene c : challengeScenes) {
-            if ((c.getEndCondition().getCondition() & i.getEndCondition().getCondition()) == i.getEndCondition().getCondition()) {
+            /*if ((c.getEndCondition().getCondition() & i.getEndCondition().getCondition()) == i.getEndCondition().getCondition()) {
+                tmp.add(c);
+            }*/
+            if ((c.getEndCondition().getCondition() & i.getEndCondition().getCondition()) != 0 ) {
                 tmp.add(c);
             }
         }
@@ -207,7 +216,7 @@ public class GameMenuFrame extends JFrame implements ActionListener{
     public Epilogue PickEpilogue(ChallengeScene i) {
         ArrayList<Epilogue> tmp = new ArrayList<>();
         for (Epilogue c : RF.getEpilogues()) {
-            if ((c.getCondition().getCondition() & i.getEndCondition().getCondition()) == i.getEndCondition().getCondition()) {
+            if ((c.getCondition().getCondition() & i.getEndCondition().getCondition()) != 0) {
                 tmp.add(c);
             }
         }

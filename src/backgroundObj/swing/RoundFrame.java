@@ -185,8 +185,8 @@ public class RoundFrame extends JFrame implements ActionListener {
         proceedToCheckBonusButton.setEnabled(false);
         proceedToCheckBonusButton.addActionListener(e -> {
             textAreaLeft.append("\n");
+            int b;
             if (prova.checkBonus(character, 0)) {
-                int b;
                 if (isTechnique) {
                     b = prova.bonusTechnic(character, 0);
                 } else {
@@ -196,6 +196,7 @@ public class RoundFrame extends JFrame implements ActionListener {
             } else {
                 textAreaLeft.append("Hai fatto un tiro di " + dadi + " senza bonus" + "\n");
             }
+
             proceedToNextPartButton.setEnabled(true);
             proceedToCheckBonusButton.setEnabled(false);
         });
@@ -437,7 +438,7 @@ public class RoundFrame extends JFrame implements ActionListener {
      */
     private void proceedToNextPart() {
         // Caso prova vinta
-        if (dadi > limit) {
+        if (t > limit) {
             textAreaLeft.append("\nHai vinto la prova:\n" + prova.getWinDescription() + "\n");
             character.addCard(rf.getLightCards().get(dice.roll(rf.getLightCards().size() - 1)));
             textAreaLeft.append("Hai guadagnato la seguente carta: " + character.getCard(character.getCardCount() - 1) + '\n');
